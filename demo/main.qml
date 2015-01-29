@@ -11,7 +11,7 @@ ApplicationWindow {
 
     initialPage: page
 
-    property var components: ["Button", "Switch", "Radio Button", "Slider", "Progress Bar", "Icon", "TextField", "Page Stack"]
+    property var components: ["Button", "Switch", "Radio Button", "Slider", "Progress Bar", "Icon", "TextField", "Page Stack", "List Items"]
     property string selectedComponent: components[0]
 
     Page {
@@ -22,6 +22,26 @@ ApplicationWindow {
         actions: [
             Action {
                 iconName: "content/add"
+            },
+
+            Action {
+                iconName: "action/search"
+                name: "Search"
+            },
+
+            Action {
+                iconName: "action/language"
+                name: "Language"
+            },
+
+            Action {
+                iconName: "action/account_circle"
+                name: "Account"
+            },
+
+            Action {
+                iconName: "action/settings"
+                name: "Settings"
             }
         ]
 
