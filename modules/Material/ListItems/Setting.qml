@@ -1,0 +1,110 @@
+/*
+ * QML Air - A lightweight and mostly flat UI widget collection for QML
+ * Copyright (C) 2014 Michael Spencer
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+import QtQuick 2.0
+import ".."
+
+BaseListItem {
+    id: listItem
+
+    height: units.dp(72)
+
+    property alias text: label.text
+    property alias subText: subLabel.text
+    property alias valueText: valueLabel.text
+
+    property alias action: actionItem.children
+    property alias secondaryItem: secondaryItem.children
+
+    Item {
+        id: actionItem
+
+        anchors {
+            left: parent.left
+            leftMargin: listItem.margins
+            verticalCenter: parent.verticalCenter
+        }
+
+        height: width
+        width: units.dp(40)
+    }
+
+    dividerInset: actionItem.children.length == 0 ? 0 : listItem.height
+
+    Column {
+        anchors {
+            verticalCenter: parent.verticalCenter
+            left: parent.left
+            right: parent.right
+            rightMargin: listItem.margins
+            leftMargin: actionItem.children.length == 0 ? listItem.margins : listItem.margins + units.dp(56)
+        }
+
+        spacing: units.dp(3)
+
+        Item {
+            width: parent.width
+            height: childrenRect.height
+            Label {
+                id: label
+
+                elide: Text.ElideRight
+                style: "subheading"
+
+
+                anchors.right: valueLabel.text  ? valueLabel.left
+                                                : secondaryItem.children.length > 0 ? secondaryItem.left
+                                                                                    : parent.right
+                anchors.left: parent.left
+                anchors.rightMargin: valueLabel.text || secondaryItem.children.length > 0
+                                     ? units.dp(16) : 0
+            }
+
+            Label {
+                id: valueLabel
+
+                color: Theme.light.subTextColor
+                elide: Text.ElideRight
+                anchors.right: parent.right
+                horizontalAlignment: Text.AlignRight
+
+                style: "body1"
+                visible: text != ""
+            }
+        }
+
+        Label {
+            id: subLabel
+
+            color: Theme.light.subTextColor
+            elide: Text.ElideRight
+            width: parent.width
+
+            style: "body1"
+            visible: text != ""
+        }
+    }
+
+    Item {
+        id: secondaryItem
+        anchors.right: parent.right
+        anchors.rightMargin: listItem.margins
+        anchors.verticalCenter: parent.verticalCenter
+        height: childrenRect.height
+        width: childrenRect.width
+    }
+}
