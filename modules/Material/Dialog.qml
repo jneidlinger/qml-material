@@ -20,9 +20,14 @@
 
 import QtQuick 2.0
 import Material 0.1
+import Material.Extras 0.1
 
 View {
 	id: view
+
+    Component.onCompleted: {
+        parent = Utils.findRootChild(view, "overlayLayer")
+    }
 
 	default property alias contents: mainCol.children
 	property string negativeBtnText: "CANCEL"
@@ -35,13 +40,26 @@ View {
 	signal accepted()
 	signal rejected()
 
+    property bool showing
+
+    onShowingChanged: {
+        if (showing)
+            parent.currentOverlay = view
+        else
+            parent.currentOverlay = null
+    }
+
 	function open() {
 		visible = true;
+        showing = true
 	}
 
 	function close() {
 		visible = false;
+        showing = false;
 	}
+
+    z: parent.z + 1
 
 	width: view.parent.width/2 >= minWidth ? view.parent.width/2 : minWidth
 	height: {
@@ -58,7 +76,7 @@ View {
 
 	Flickable {
         id: mainFlick
-
+        z: parent.z + 1
 		anchors {
 			top: parent.top
 			left: parent.left
@@ -93,7 +111,7 @@ View {
 
 	Item {
 		id: btnContainer
-
+        z: parent.z + 1
 		width: parent.width
 		height: units.dp(48)
 		anchors.bottom: parent.bottom
@@ -131,6 +149,15 @@ View {
 	}
 
 	Scrollbar {
-        	flickableItem: mainFlick
-    	}
+        flickableItem: mainFlick
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        propagateComposedEvents: false
+        onClicked: {
+            console.log("clicked blue")
+            mouse.accepted = false
+        }
+    }
 }

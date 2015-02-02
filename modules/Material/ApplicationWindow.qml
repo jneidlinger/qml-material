@@ -112,11 +112,37 @@ Controls.ApplicationWindow {
 
         property Item currentOverlay
 
+        Rectangle {
+            id: overlayColor
+            color: "transparent"
+            anchors.fill: parent
+            visible: overlayLayer.currentOverlay != null
+
+            states: State {
+                name: "ShowState"
+                when: overlayColor.visible
+
+                PropertyChanges {
+                    target: overlayColor
+                    color: Qt.rgba(0, 0, 0, 0.3)
+                }
+            }
+
+            transitions: Transition {
+                ColorAnimation {
+                    duration: 300
+                    easing.type: Easing.InOutQuad
+                }
+
+            }
+        }
+
         MouseArea {
             anchors.fill: parent
             enabled: overlayLayer.currentOverlay != null
             hoverEnabled: enabled
             onClicked: overlayLayer.currentOverlay.close()
+            onWheel: wheel.accepted = true
         }
     }
 
