@@ -17,7 +17,10 @@ Item {
 
     onShowingChanged: {
         if (showing)
+        {
+            parent.shadowBackground = false
             parent.currentOverlay = dropdown
+        }
         else
             parent.currentOverlay = null
     }

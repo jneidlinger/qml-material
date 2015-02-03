@@ -111,12 +111,13 @@ Controls.ApplicationWindow {
         z: 100
 
         property Item currentOverlay
+        property bool shadowBackground: false
 
         Rectangle {
             id: overlayColor
             color: "transparent"
             anchors.fill: parent
-            visible: overlayLayer.currentOverlay != null
+            visible: overlayLayer.currentOverlay != null && overlayLayer.shadowBackground
 
             states: State {
                 name: "ShowState"
