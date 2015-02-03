@@ -27,14 +27,17 @@ View {
 
     Component.onCompleted: {
         parent = Utils.findRootChild(view, "overlayLayer")
+        parent.shadowBackground = true
     }
 
 	default property alias contents: mainCol.children
+
+    property bool hasConfirmationOptions: true
 	property string negativeBtnText: "CANCEL"
 	property string positiveBtnText: "OK"
 	property real minWidth: negativeBtn.width + positiveBtn.width + units.dp(124) //min 100dp padding
 	property real maxHeight: view.parent.height/2
-        property real minHeight: units.dp(96) + titleLabel.height
+    property real minHeight: units.dp(96) + titleLabel.height
 	property string title
 
 	signal accepted()
@@ -44,7 +47,10 @@ View {
 
     onShowingChanged: {
         if (showing)
+        {
+            parent.shadowBackground = true
             parent.currentOverlay = view
+        }
         else
             parent.currentOverlay = null
     }
@@ -73,6 +79,7 @@ View {
     	}
 	elevation: 5
 	anchors.centerIn: parent
+    visible: false
 
 	Flickable {
         id: mainFlick
@@ -116,6 +123,7 @@ View {
 		height: units.dp(48)
 		anchors.bottom: parent.bottom
 		anchors.bottomMargin: units.dp(8)
+        visible: hasConfirmationOptions
 
 		Button {
 			id: negativeBtn
