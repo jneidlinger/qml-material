@@ -1,19 +1,50 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.2 as QuickControls
 import Material 0.1
+import Material.Extras 0.1
 
 Item {
     property string currentText
 
-    Component {
-        id: simpleDialogComponent
-        Dialog {
-            title: "Simple Dialog"
-            hasConfirmationOptions: false
-            contents: Column {
+    Dialog {
+        id: actionableDialog
+        title: "Change Text"
+        hasActions: true
+
+        TextField {
+            id: optionText
+            text: currentText
+            anchors.horizontalCenter: parent.horizontalCenter
+            placeholderText: "New Option to Confirm"
+        }
+
+        onAccepted: {
+            currentText = optionText.text
+        }
+    }
+
+    Dialog {
+        id: scrollingDialog
+        title: "Choose Size"
+        hasActions: false
+
+        Flickable {
+            id: mainFlick
+            z: parent.z + 1
+            width: units.dp(200)
+            height: units.dp(200)
+            clip: true
+            interactive: contentHeight > height
+            contentHeight: mainCol.height
+            contentWidth: width
+
+            Column {
+                id: mainCol
+
                 QuickControls.ExclusiveGroup {
                     id: optionGroup
                 }
+
                 RadioButton {
                     text: "Small"
                     checked: true
@@ -24,39 +55,35 @@ Item {
                     exclusiveGroup: optionGroup
                 }
                 RadioButton {
-                    text: "Large"
+                    text: "Big"
                     exclusiveGroup: optionGroup
                 }
                 RadioButton {
-                    text: "Huge"
+                    text: "Gigantic"
+                    exclusiveGroup: optionGroup
+                }
+                RadioButton {
+                    text: "Enourmous"
+                    exclusiveGroup: optionGroup
+                }
+                RadioButton {
+                    text: "Titanic"
+                    exclusiveGroup: optionGroup
+                }
+                RadioButton {
+                    text: "Humongous"
+                    exclusiveGroup: optionGroup
+                }
+                RadioButton {
+                    text: "Ginourmous"
                     exclusiveGroup: optionGroup
                 }
             }
         }
-    }
 
-    Component {
-        id: confirmationDialogComponent
-        Dialog {
-            title: "Confirmation Dialog"
-            hasConfirmationOptions: true
-            contents: Column {
-                width: parent.width
-                TextField {
-                    id: optionText
-                    width: parent.width
-                    placeholderText: "New Option to Confirm"
-                }
-            }
-
-            onAccepted: {
-                currentText = optionText.text
-            }
+        Scrollbar {
+            flickableItem: mainFlick
         }
-    }
-
-    Loader {
-        id: dialogLoader
     }
 
     Column {
@@ -64,20 +91,20 @@ Item {
         spacing: units.dp(20)
 
         Button {
-            text: "Show Simple Dialog"
+            text: "Show Action Dialog"
             anchors.horizontalCenter: parent.horizontalCenter
+            elevation: 1
             onClicked: {
-                dialogLoader.sourceComponent = simpleDialogComponent
-                dialogLoader.item.open()
+                actionableDialog.show()
             }
         }
 
         Button {
-            text: "Show Confirmation Dialog"
+            text: "Show Scrolling Dialog"
             anchors.horizontalCenter: parent.horizontalCenter
+            elevation: 1
             onClicked: {
-                dialogLoader.sourceComponent = confirmationDialogComponent
-                dialogLoader.item.open()
+                scrollingDialog.show()
             }
         }
 

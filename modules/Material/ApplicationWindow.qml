@@ -75,8 +75,6 @@ Controls.ApplicationWindow {
 
     property bool clientSideDecorations: false
 
-    flags: clientSideDecorations ? Qt.FramelessWindowHint : 0
-
     AppTheme {
         id: __theme
     }
@@ -103,7 +101,8 @@ Controls.ApplicationWindow {
         onPopped: __toolbar.pop(  )
     }
 
-    Item {
+
+    Rectangle {
         id: overlayLayer
         objectName: "overlayLayer"
 
@@ -111,31 +110,24 @@ Controls.ApplicationWindow {
         z: 100
 
         property Item currentOverlay
-        property bool shadowBackground: false
+        color: "transparent"
 
-        Rectangle {
-            id: overlayColor
-            color: "transparent"
-            anchors.fill: parent
-            visible: overlayLayer.currentOverlay != null && overlayLayer.shadowBackground
+        states: State {
+            name: "ShowState"
+            when: overlayLayer.currentOverlay != null
 
-            states: State {
-                name: "ShowState"
-                when: overlayColor.visible
+            PropertyChanges {
+                target: overlayLayer
+                color: currentOverlay.backdropColor
+            }
+        }
 
-                PropertyChanges {
-                    target: overlayColor
-                    color: Qt.rgba(0, 0, 0, 0.3)
-                }
+        transitions: Transition {
+            ColorAnimation {
+                duration: 300
+                easing.type: Easing.InOutQuad
             }
 
-            transitions: Transition {
-                ColorAnimation {
-                    duration: 300
-                    easing.type: Easing.InOutQuad
-                }
-
-            }
         }
 
         MouseArea {
@@ -151,6 +143,10 @@ Controls.ApplicationWindow {
     height: units.dp(600)
 
     Component.onCompleted: {
+
+      if (clientSideDecorations)
+          flags |= Qt.FramelessWindowHint
+
       units.pixelDensity = Qt.binding( function() {
           switch(Qt.platform.os) {
               case "windows":
@@ -161,6 +157,7 @@ Controls.ApplicationWindow {
                   return Screen.pixelDensity;
           }
       } );
+
       Device.type = Qt.binding( function () {
         var diagonal = Math.sqrt(Math.pow((Screen.width/Screen.pixelDensity), 2) + Math.pow((Screen.height/Screen.pixelDensity), 2)) * 0.039370;
         if (diagonal >= 3.5 && diagonal < 5) { //iPhone 1st generation to phablet

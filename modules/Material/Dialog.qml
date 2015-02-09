@@ -19,153 +19,163 @@
  */
 
 import QtQuick 2.0
+import QtQuick.Layouts 1.1
 import Material 0.1
 import Material.Extras 0.1
 
-View {
-	id: view
+Popover {
+    id: dialog
 
-    Component.onCompleted: {
-        parent = Utils.findRootChild(view, "overlayLayer")
-        parent.shadowBackground = true
-    }
+    anchor: Item.Center
 
-	default property alias contents: mainCol.children
+    backdropColor: Qt.rgba(0, 0, 0, 0.3)
 
-    property bool hasConfirmationOptions: true
-	property string negativeBtnText: "CANCEL"
-	property string positiveBtnText: "OK"
-	property real minWidth: negativeBtn.width + positiveBtn.width + units.dp(124) //min 100dp padding
-	property real maxHeight: view.parent.height/2
-    property real minHeight: units.dp(96) + titleLabel.height
-	property string title
+    width: Math.max(dialogContainer.width, minimumWidth)
+    height: dialogContainer.height
 
-	signal accepted()
-	signal rejected()
+    property int minimumWidth: units.dp(240)
 
-    property bool showing
+    property alias title: titleLabel.text
 
-    onShowingChanged: {
-        if (showing)
-        {
-            parent.shadowBackground = true
-            parent.currentOverlay = view
+    property string negativeButtonText: "CANCEL"
+    property string positiveButtonText: "OK"
+
+    property bool hasActions: true
+
+    default property alias dialogContent: placeholder.children
+
+    signal accepted()
+    signal rejected()
+
+    transitions: [
+        Transition {
+            ParallelAnimation {
+                NumberAnimation {
+                    target: internalView
+                    property: "opacity"
+                    duration: 200
+                    easing.type: Easing.InOutQuad
+                }
+
+                NumberAnimation {
+                    target: internalView
+                    property: "width"
+                    duration: 100
+                    easing.type: Easing.InOutQuad
+                }
+
+                NumberAnimation {
+                    target: internalView
+                    property: "height"
+                    duration: 100
+                    easing.type: Easing.InOutQuad
+                }
+            }
         }
-        else
-            parent.currentOverlay = null
-    }
+    ]
 
-	function open() {
-		visible = true;
-        showing = true
-	}
+    Item {
+        id: dialogContainer
+        width: Math.max(minimumWidth,
+                        (placeholder.childrenRect.width +
+                        placeholder.anchors.leftMargin +
+                        placeholder.anchors.rightMargin))
 
-	function close() {
-		visible = false;
-        showing = false;
-	}
+        height: titleLabel.height +
+                titleLabel.anchors.topMargin +
+                placeholder.childrenRect.height +
+                placeholder.anchors.topMargin +
+                placeholder.anchors.bottomMargin +
+                buttonContainer.height
 
-    z: parent.z + 1
-
-	width: view.parent.width/2 >= minWidth ? view.parent.width/2 : minWidth
-	height: {
-        	if (units.dp(96) + mainCol.height <= maxHeight && units.dp(96) + mainCol.height >= minHeight) {
-            		return units.dp(96) + mainCol.height;
-        	} else if (units.dp(96) + mainCol.height < minHeight) {
-            		return minHeight;
-        	} else {
-            		return maxHeight;
-        	}
-    	}
-	elevation: 5
-	anchors.centerIn: parent
-    visible: false
-
-	Flickable {
-        id: mainFlick
-        z: parent.z + 1
-		anchors {
-			top: parent.top
-			left: parent.left
-			bottom: btnContainer.top
-			right: parent.right
-			rightMargin: units.dp(24)
-			topMargin: units.dp(24)
-			leftMargin: units.dp(24)
-			bottomMargin: units.dp(16)
-		}
-		clip: true
-		interactive: contentHeight > height
-		contentHeight: mainCol.height
-        	contentWidth: width
-
-		Column {
-			id: mainCol
-
-           		spacing: units.dp(5)
-            		width: parent.width
-
-			Label {
-                		id: titleLabel
-
-				style: "title"
-                		width: parent.width
-				text: view.title
-                		wrapMode: Text.Wrap
-			}
-		}
-	}
-
-	Item {
-		id: btnContainer
-        z: parent.z + 1
-		width: parent.width
-		height: units.dp(48)
-		anchors.bottom: parent.bottom
-		anchors.bottomMargin: units.dp(8)
-        visible: hasConfirmationOptions
-
-		Button {
-			id: negativeBtn
-
-			text: view.negativeBtnText
-			anchors {
-				verticalCenter: parent.verticalCenter
-				right: positiveBtn.left
-				rightMargin: units.dp(8)
-			}
-			onClicked: {
-				view.close();
-				view.rejected();
-			}
-		}
-
-		Button {
-			id: positiveBtn
-
-			text: positiveBtnText
-			anchors {
-				verticalCenter: parent.verticalCenter
-				right: parent.right
-				rightMargin: units.dp(16)
-			}
-			onClicked: {
-				view.close();
-				view.accepted();
-			}
-		}
-	}
-
-	Scrollbar {
-        flickableItem: mainFlick
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        propagateComposedEvents: false
-        onClicked: {
-            console.log("clicked blue")
-            mouse.accepted = false
+        Label {
+            id: titleLabel
+            height: implicitHeight
+            style: "title"
+            anchors {
+                top: parent.top
+                topMargin: units.dp(16)
+                left: parent.left
+                leftMargin: units.dp(16)
+            }
         }
+
+        Item {
+            z: parent.z + 5
+            anchors {
+                left: parent.left
+                leftMargin: units.dp(16)
+                right: parent.right
+                rightMargin: units.dp(16)
+                top: titleLabel.bottom
+                topMargin: units.dp(16)
+                bottom: buttonContainer.top
+                bottomMargin: hasActions ? 0 : units.dp(16)
+            }
+            id: placeholder
+        }
+
+        Item {
+            id: buttonContainer
+            z: parent.z + 5
+            width: negativeButton.width + positiveButton.width + units.dp(24)
+            height: hasActions ? units.dp(64) : 0
+            visible: hasActions
+
+            anchors {
+                bottom: parent.bottom
+                right: parent.right
+            }
+
+            Button {
+                id: negativeButton
+
+                text: negativeButtonText
+                textColor: Theme.accentColor
+                anchors {
+                    top: parent.top
+                    topMargin: units.dp(8)
+                    right: positiveButton.left
+                    rightMargin: units.dp(8)
+                    bottom: parent.bottom
+                    bottomMargin: units.dp(8)
+                }
+                onClicked: {
+                    close();
+                    rejected();
+                }
+            }
+
+            Button {
+                id: positiveButton
+
+                text: positiveButtonText
+                textColor: Theme.accentColor
+                anchors {
+                    top: parent.top
+                    topMargin: units.dp(8)
+                    right: parent.right
+                    rightMargin: units.dp(16)
+                    bottom: parent.bottom
+                    bottomMargin: units.dp(8)
+                }
+                onClicked: {
+                    close()
+                    accepted();
+                }
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            propagateComposedEvents: false
+            onClicked: {
+                mouse.accepted = false
+            }
+        }
+    }
+
+    function show() {
+        open(parent)
     }
 }
