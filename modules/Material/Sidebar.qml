@@ -110,8 +110,8 @@ View {
             left: parent.left
             right: parent.right
             bottom: footer.top
-            rightMargin: mode === "left" ? 1 : 0
-            leftMargin: mode === "right" ? 1 : 0
+            rightMargin: mode === "left" ? borderWidth : 0
+            leftMargin: mode === "right" ? borderWidth : 0
         }
 
         contentWidth: width
