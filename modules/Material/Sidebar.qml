@@ -88,6 +88,7 @@ View {
     }
 
     default property alias contents: contents.data
+    property alias footerContents: footer.data
 
     ListItem.Header {
         id: headerItem
@@ -106,7 +107,7 @@ View {
             top: headerItem.visible ? headerItem.bottom : parent.top
             left: parent.left
             right: parent.right
-            bottom: parent.bottom
+            bottom: footer.top
             rightMargin: mode === "left" ? 1 : 0
             leftMargin: mode === "right" ? 1 : 0
         }
@@ -139,5 +140,14 @@ View {
 
     Scrollbar {
         flickableItem: flickable
+    }
+
+    Item {
+        id: footer
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: childrenRect.height
     }
 }
