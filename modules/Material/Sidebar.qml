@@ -52,6 +52,7 @@ View {
 
     backgroundColor: style === "default" ? "white" : "#333"
     property color borderColor: style === "dark" ? Qt.rgba(0.5,0.5,0.5,0.5) : Theme.light.dividerColor
+    property alias borderWidth: border.width
 
     anchors {
         left: mode === "left" ? parent.left : undefined
@@ -61,6 +62,7 @@ View {
     }
 
     Rectangle {
+        id: border
         color: borderColor
         width: 1
 
