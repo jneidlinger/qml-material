@@ -63,7 +63,6 @@ BaseListItem {
             Layout.column: 2
 
             spacing: units.dp(3)
-                Layout.fillWidth: true
 
             RowLayout {
                 Layout.fillWidth: true
@@ -118,14 +117,6 @@ BaseListItem {
             Layout.column: 4
 
             visible: childrenRect.width > 0
-        }
-
-        Item {
-            id: secondaryItem
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: childrenRect.width
-            Layout.preferredHeight: parent.height
-            Layout.column: 4
         }
     }
 }
