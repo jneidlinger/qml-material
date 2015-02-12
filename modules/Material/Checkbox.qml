@@ -35,16 +35,21 @@ Controls.CheckBox {
 
     style: CheckBoxStyle {
         id: checkboxStyle
+
         spacing: units.dp(2)
 
         label: Item {
             implicitWidth: text.implicitWidth + 2
             implicitHeight: text.implicitHeight
+
             baselineOffset: text.baselineOffset
+
             Label {
                 id: text
-                style: "button"
+
                 anchors.centerIn: parent
+
+                style: "button"
                 color: control.enabled ? control.darkBackground ? Theme.dark.textColor
                                                                 : Theme.light.textColor
                                        : control.darkBackground ? Theme.alpha("#fff", 0.30)
@@ -53,51 +58,91 @@ Controls.CheckBox {
             }
         }
 
-        indicator:
-            Item {
+        indicator: Item {
             id: parentRect
+
             implicitWidth: units.dp(54)
             implicitHeight: units.dp(54)
+
             Rectangle {
+                id: indicatorRect
+
+                anchors.centerIn: parent
+
                 property color __internalColor: control.enabled ? control.darkBackground ? control.color
                                                                                          : control.color
                                                                 : control.darkBackground ? Theme.alpha("#fff", 0.30)
                                                                                          : Theme.alpha("#000", 0.26)
 
-                id: indicatorRect
-                anchors.centerIn: parent
                 width: units.dp(24)
                 height: units.dp(24)
                 radius: units.dp(2)
+
+                border.width: units.dp(2)
+
                 border.color: control.enabled ? control.checked ? control.color
                     : control.darkBackground ? Theme.alpha("#fff", 0.70) : Theme.alpha("#000", 0.54)
                     : control.darkBackground ? Theme.alpha("#fff", 0.30) : Theme.alpha("#000", 0.26)
 
                 color: control.checked ? __internalColor : "transparent"
-                border.width: units.dp(2)
+
+                Behavior on color {
+                    ColorAnimation {
+                        easing.type: Easing.InOutQuad
+                        duration: 200
+                    }
+                }
+
+                Behavior on border.color {
+                    ColorAnimation {
+                        easing.type: Easing.InOutQuad
+                        duration: 200
+                    }
+                }
+
                 Item {
                     id: container
-                    property int thickness: units.dp(4)
+
                     anchors.centerIn: indicatorRect
+
                     height: parent.height
                     width: parent.width
-                    visible: control.checked
+
+                    opacity: control.checked ? 1 : 0
+
+                    property int thickness: units.dp(4)
+
+                    Behavior on opacity {
+                        NumberAnimation {
+                            easing.type: Easing.InOutQuad
+                            duration: 200
+                        }
+                    }
+
                     Rectangle {
                         id: vert
+
+                        anchors {
+                            top: parent.top
+                            right: parent.right
+                            bottom: parent.bottom
+                        }
+
                         radius: units.dp(1)
                         color: control.darkBackground ? Theme.light.textColor : Theme.dark.textColor
                         width: container.thickness * 2
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                        anchors.top: parent.top
+
                     }
                     Rectangle {
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                            bottom: parent.bottom
+                        }
+
                         radius: units.dp(1)
                         color: control.darkBackground ? Theme.light.textColor : Theme.dark.textColor
                         height: container.thickness
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
                     }
 
                     transform: [
@@ -112,21 +157,20 @@ Controls.CheckBox {
                         },
                         Scale {
                             id: widthScale
+
                             origin { x: container.width / 2; y: container.height / 2 }
                             xScale: control.checked ? 0.6 : 0.2
                             yScale: control.checked ? 0.6 : 0.2
 
                             Behavior on xScale {
-                                NumberAnimation
-                                {
+                                NumberAnimation {
                                     easing.type: Easing.InOutQuad
                                     duration: 200
                                 }
                             }
 
                             Behavior on yScale {
-                                NumberAnimation
-                                {
+                                NumberAnimation {
                                     easing.type: Easing.InOutQuad
                                     duration: 200
                                 }
@@ -140,13 +184,19 @@ Controls.CheckBox {
     }
 
     Ink {
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
+        anchors {
+            verticalCenter: parent.verticalCenter
+            left: parent.left
+        }
+
         width: units.dp(54)
         height: units.dp(54)
         color: checkBox.checked ? Theme.alpha(checkBox.color, 0.20) : Qt.rgba(0,0,0,0.1)
         enabled: checkBox.enabled
-        onClicked: checkBox.checked = !checkBox.checked
+
         circular: true
+        centered: true
+
+        onClicked: checkBox.checked = !checkBox.checked
     }
 }

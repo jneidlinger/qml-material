@@ -1,6 +1,7 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014 Michael Spencer <sonrisesoftware@gmail.com>
+ *               2015 Jordan Neidlinger <jneidlinger@barracuda.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@ import ".."
 BaseListItem {
     id: listItem
 
-    height: units.dp(72)
+    height: maximumLineCount == 2 ? units.dp(72) : units.dp(88)
 
     property alias text: label.text
     property alias subText: subLabel.text
@@ -33,61 +34,90 @@ BaseListItem {
 
     dividerInset: actionItem.children.length === 0 ? 0 : listItem.height
 
+    property int maximumLineCount: 2
+
     GridLayout {
         anchors.fill: parent
-        anchors.leftMargin: actionItem.children.length === 0 ? listItem.margins : 0
+
+        anchors.leftMargin: listItem.margins
         anchors.rightMargin: listItem.margins
+
         columns: 4
         rows: 1
-        columnSpacing: 0
+        columnSpacing: units.dp(16)
 
         Item {
             id: actionItem
-            Layout.preferredWidth: children.length === 0 ? 0 : units.dp(72)
+
+            Layout.preferredWidth: children.length === 0 ? 0 : units.dp(40)
+            Layout.preferredHeight: width
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredHeight: parent.height
             Layout.column: 1
+
+            visible: childrenRect.width > 0
         }
 
         ColumnLayout {
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.fillWidth: true
             Layout.column: 2
-            spacing: units.dp(3)
 
-            Label {
-                id: label
+            spacing: units.dp(3)
                 Layout.fillWidth: true
 
-                elide: Text.ElideRight
-                style: "subheading"
+            RowLayout {
+                Layout.fillWidth: true
+
+                spacing: units.dp(8)
+
+                Label {
+                    id: label
+
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+
+                    elide: Text.ElideRight
+                    style: "subheading"
+                }
+
+                Label {
+                    id: valueLabel
+
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: visible ? implicitWidth : 0
+
+                    color: Theme.light.subTextColor
+                    elide: Text.ElideRight
+                    horizontalAlignment: Qt.AlignHCenter
+                    style: "body1"
+                    visible: text != ""
+                }
             }
 
             Label {
                 id: subLabel
+
                 Layout.fillWidth: true
+                Layout.preferredHeight: implicitHeight * maximumLineCount/lineCount
 
                 color: Theme.light.subTextColor
                 elide: Text.ElideRight
-                width: parent.width
                 wrapMode: Text.WordWrap
                 style: "body1"
+
                 visible: text != ""
-                maximumLineCount : 2
+                maximumLineCount: listItem.maximumLineCount - 1
             }
         }
 
-        Label {
-            id: valueLabel
+        Item {
+            id: secondaryItem
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: visible ? implicitWidth + units.dp(32) : 0
-            Layout.column: 3
+            Layout.preferredWidth: childrenRect.width
+            Layout.preferredHeight: parent.height
+            Layout.column: 4
 
-            color: Theme.light.subTextColor
-            elide: Text.ElideRight
-            horizontalAlignment: Qt.AlignHCenter
-            style: "body1"
-            visible: text != ""
+            visible: childrenRect.width > 0
         }
 
         Item {

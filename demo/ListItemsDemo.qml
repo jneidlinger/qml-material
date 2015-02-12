@@ -30,6 +30,14 @@ Item {
 
             ListItem.Subtitled {
                 text: "Subtitled list item"
+                subText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec eleifend arcu, eu convallis nisi."
+                valueText: "2h ago"
+
+                maximumLineCount: 3
+            }
+
+            ListItem.Subtitled {
+                text: "Subtitled list item"
                 subText: "With some subtext, icon, and secondary item!"
                 secondaryItem: Switch {
                     id: enablingSwitch
@@ -41,6 +49,7 @@ Item {
                 action: Icon {
                     anchors.centerIn: parent
                     name: "device/access_alarm"
+                    size: units.dp(32)
                 }
             }
 
