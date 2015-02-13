@@ -32,6 +32,10 @@ BaseListItem {
     property alias action: actionItem.children
     property alias secondaryItem: secondaryItem.children
 
+    property alias label: label
+    property alias subLabel: subLabel
+    property alias valueLabel: valueLabel
+
     dividerInset: actionItem.children.length === 0 ? 0 : listItem.height
 
     property int maximumLineCount: 2
@@ -95,9 +99,7 @@ BaseListItem {
 
             Label {
                 id: subLabel
-
                 Layout.fillWidth: true
-                Layout.preferredHeight: implicitHeight * maximumLineCount/lineCount
 
                 color: Theme.light.subTextColor
                 elide: Text.ElideRight
