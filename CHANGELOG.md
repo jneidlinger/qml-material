@@ -10,3 +10,9 @@ QML Material CHANGELOG
  * Add the Material Design menu field component
  * Improve the layout of the Standard list item
  * Add an equals symbol to the "extra" icon collection
+ * Add a right mode to the navigation drawer
+ * Allow pages to customize the action count in the toolbar
+ * [Palette] Update with color swatches from Material Design
+ * [Demo] Add color picker to change theme colors
+ * [Dialog] Fix an issue preventing popovers from working
+ * [MenuField] Fix issues with the menu not being the right size
