@@ -6,6 +6,7 @@ Subtitled {
 
     property alias model: listView.model
     property alias selectedIndex: listView.currentIndex
+    property alias dropdownWidth: menu.width
 
     subText: listView.currentItem.text
 
