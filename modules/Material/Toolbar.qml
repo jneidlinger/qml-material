@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -40,20 +40,31 @@ View {
                                                                                : units.dp(64)
     height: targetHeight
 
-    elevation: backgroundColor == page.color ? 0 : 2
+    elevation: backgroundColor == page.color ? 0 : page.actionBar.elevation
 
     fullWidth: true
 
     clipContent: true
 
-    property int targetHeight: page && page.actionBar.hidden ? 0
-                                                : implicitHeight + (tabs.length > 0 ? tabbar.height : 0)
-                                                                 + (expanded ? implicitHeight : 0)
+    property int actionBarHeight: {
+        if (!page || page.actionBar.hidden)
+            return 0
+
+        var height = implicitHeight + page.actionBar.extendedHeight
+
+        if (page.rightSidebar && page.rightSidebar.showing) {
+            var sidebarHeight = implicitHeight + page.rightSidebar.actionBar.extendedHeight
+
+            height = Math.max(height, sidebarHeight)
+        }
+
+        return height
+    }
+
+    property int targetHeight: actionBarHeight + (tabs.length > 0 ? tabbar.height : 0)
 
     property int maxActionCount: (Device.formFactor == "desktop"
                                   ? 5 : Device.formFactor == "tablet" ? 4 : 3)
-
-    property bool expanded: false
 
     property bool clientSideDecorations: false
 
@@ -84,6 +95,10 @@ View {
 
     function pop() {
         stack.pop()
+
+        if (page.rightSidebar && page.rightSidebar.actionBar)
+            rightSidebarStack.pop()
+
         page = pages.pop()
     }
 
@@ -92,6 +107,9 @@ View {
         toolbar.page = page
 
         stack.push(page.actionBar)
+
+        if (page.rightSidebar && page.rightSidebar.actionBar)
+            rightSidebarStack.push(page.rightSidebar.actionBar)
 
         pages.push(toolbar.page)
     }
@@ -102,64 +120,106 @@ View {
 
         stack.replace(page.actionBar)
 
+        if (page.rightSidebar && page.rightSidebar.actionBar)
+            rightSidebarStack.replace(page.rightSidebar.actionBar)
+
         pages.pop()
         pages.push(toolbar.page)
     }
 
+    Rectangle {
+        anchors.fill: rightSidebarStack
+
+        color: page.rightSidebar && page.rightSidebar.actionBar.backgroundColor
+               ? Qt.darker(page.rightSidebar.actionBar.backgroundColor,1).a == 0
+                 ? page.rightSidebar.color
+                 : page.rightSidebar.actionBar.backgroundColor
+               : Theme.primaryColor
+    }
+
     Controls.StackView {
         id: stack
-        height: toolbar.implicitHeight
+        height: actionBarHeight
+
+        Behavior on height {
+            NumberAnimation { duration: MaterialAnimation.pageTransitionDuration }
+        }
 
         anchors {
             left: parent.left
-            right: clientSideDecorations ? windowControls.left : parent.right
+            right: page && page.rightSidebar
+                   ? rightSidebarStack.left
+                   : clientSideDecorations ? windowControls.left : parent.right
+            rightMargin: 0
         }
 
-        delegate: Controls.StackViewDelegate {
-            pushTransition: Controls.StackViewTransition {
-                SequentialAnimation {
-                    id: actionBarShowAnimation
+        delegate: toolbarDelegate
+    }
 
-                    ParallelAnimation {
-                        NumberAnimation {
-                            duration: MaterialAnimation.pageTransitionDuration
-                            target: enterItem
-                            property: "opacity"
-                            from: 0
-                            to: 1
-                        }
+    Controls.StackView {
+        id: rightSidebarStack
+        height: actionBarHeight
+        width: page && page.rightSidebar
+               ? page.rightSidebar.width
+               : 0
 
-                        NumberAnimation {
-                            duration: MaterialAnimation.pageTransitionDuration
-                            target: enterItem
-                            property: "y"
-                            from: enterItem.height
-                            to: 0
-                        }
+        Behavior on height {
+            NumberAnimation { duration: MaterialAnimation.pageTransitionDuration }
+        }
+
+        anchors {
+            right: clientSideDecorations ? windowControls.left : parent.right
+            rightMargin: page.rightSidebar.anchors.rightMargin
+        }
+
+        delegate: toolbarDelegate
+    }
+
+    Controls.StackViewDelegate {
+        id: toolbarDelegate
+
+        pushTransition: Controls.StackViewTransition {
+            SequentialAnimation {
+                id: actionBarShowAnimation
+
+                ParallelAnimation {
+                    NumberAnimation {
+                        duration: MaterialAnimation.pageTransitionDuration
+                        target: enterItem
+                        property: "opacity"
+                        from: 0
+                        to: 1
                     }
-                }
-                SequentialAnimation {
-                    id: previousHideAnimation
 
-                    ParallelAnimation {
-
-                        NumberAnimation {
-                            duration: MaterialAnimation.pageTransitionDuration
-                            target: exitItem
-                            property: "opacity"
-                            to: 0
-                        }
-
-                        NumberAnimation {
-                            duration: MaterialAnimation.pageTransitionDuration
-                            target: exitItem
-                            property: "y"
-                            to: exitItem ? -exitItem.height : 0
-                        }
+                    NumberAnimation {
+                        duration: MaterialAnimation.pageTransitionDuration
+                        target: enterItem
+                        property: "y"
+                        from: enterItem.height
+                        to: 0
                     }
                 }
             }
+            SequentialAnimation {
+                id: previousHideAnimation
 
+                ParallelAnimation {
+
+                    NumberAnimation {
+                        duration: MaterialAnimation.pageTransitionDuration
+                        target: exitItem
+                        property: "opacity"
+                        to: 0
+                    }
+
+                    NumberAnimation {
+                        duration: MaterialAnimation.pageTransitionDuration
+                        target: exitItem
+                        property: "y"
+                        to: exitItem ? -exitItem.height : 0
+                    }
+                }
+            }
         }
     }
 

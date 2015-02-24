@@ -15,41 +15,37 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-
 import QtQuick 2.0
+import QtQuick.Controls 1.2 as Controls
+import Material 0.1
 
-Rectangle {
-    id: overlayLayer
-    objectName: "overlayLayer"
+Page {
+    id: pageSidebar
 
-    anchors.fill: parent
+    height: parent.height
 
-    property Item currentOverlay
-    color: "transparent"
+    property bool showing: true
 
-    states: State {
-        name: "ShowState"
-        when: overlayLayer.currentOverlay != null
+    Component.onCompleted: behavior.enabled = true
 
-        PropertyChanges {
-            target: overlayLayer
-            color: currentOverlay.overlayColor
+    anchors {
+        rightMargin: showing ? 0 : -width
+
+        Behavior on rightMargin {
+            id: behavior
+            enabled: false
+            
+            NumberAnimation { duration: 200 }
         }
     }
 
-    transitions: Transition {
-        ColorAnimation {
-            duration: 300
-            easing.type: Easing.InOutQuad
-        }
+    property alias mode: sidebar.mode
 
-    }
+    default property alias sidebar: sidebar.data
 
-    MouseArea {
+    Sidebar {
+        id: sidebar
+
         anchors.fill: parent
-        enabled: overlayLayer.currentOverlay != null
-        hoverEnabled: enabled
-        onClicked: overlayLayer.currentOverlay.close()
-        onWheel: wheel.accepted = true
     }
 }

@@ -10,7 +10,7 @@ Subtitled {
 
     subText: listView.currentItem.text
 
-    onTriggered: menu.open(listItem, units.dp(16), 0)
+    onClicked: menu.open(listItem, units.dp(16), 0)
 
     Dropdown {
         id: menu
@@ -38,7 +38,7 @@ Subtitled {
 
                 text: modelData
 
-                onTriggered: {
+                onClicked: {
                     listView.currentIndex = index
                     menu.close()
                 }
@@ -46,4 +46,3 @@ Subtitled {
         }
     }
 }
-
