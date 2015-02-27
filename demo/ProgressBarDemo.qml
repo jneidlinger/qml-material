@@ -65,5 +65,32 @@ Item {
                 cycleColors: true
             }
         }
+
+        RowLayout {
+            Label {
+                text: "Determinate Value"
+            }
+
+            Slider {
+                id: percentage
+                stepSize: 1
+                minimumValue: 0
+                maximumValue: 100
+                value: 26
+            }
+
+            CircularProgress {
+                width: units.dp(64)
+                height: units.dp(64)
+                cycleColors: false
+                determinate: true
+                percent: percentage.value
+
+                Label {
+                    anchors.centerIn: parent
+                    text: percentage.value
+                }
+            }
+        }
     }
 }
