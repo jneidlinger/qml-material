@@ -31,8 +31,35 @@ Canvas {
      */
     property bool cycleColors : false
 
+    /*!
+       Sets the color of the progress indicator. This value is ignored
+       if cycleColors is set to true
+     */
     property color color : Theme.primaryColor
     onColorChanged: requestPaint();
+
+    /*!
+       Set to \c true to behave as determinate percentage indicator
+     */
+    property bool determinate: false
+    onDeterminateChanged:
+    {
+        if(!determinate)
+        {
+            internal.arcEndPoint = 0
+            internal.arcStartPoint = 0
+            internal.rotate = 0
+        }
+
+        requestPaint();
+    }
+
+    /*!
+       Sets the percentage value to display. Valid values are between 0 and 100. This value
+       is ignored if determinate is set to false
+     */
+    property int percent: 0
+    onPercentChanged: requestPaint();
 
     QtObject {
         id: internal
@@ -57,13 +84,13 @@ Canvas {
         from: 0
         to: 2 * Math.PI
         loops: Animation.Infinite
-        running: true
+        running: !determinate
         easing.type: Easing.Linear
         duration: 2000
     }
 
     SequentialAnimation {
-        running: true
+        running: !determinate
         loops: Animation.Infinite
         NumberAnimation {
             id: animateOpacity
@@ -86,7 +113,7 @@ Canvas {
     }
 
     SequentialAnimation {
-        running: true
+        running: cycleColors
         loops: Animation.Infinite
 
         ColorAnimation {
@@ -133,9 +160,16 @@ Canvas {
         ctx.strokeStyle = canvas.cycleColors ? internal.cycleColor : canvas.color
         ctx.lineWidth = units.dp(3);
         ctx.lineCap = "butt";
+
         ctx.translate(canvas.width/2, canvas.height/2);
-        ctx.rotate(internal.rotate);
-        ctx.arc(0, 0, Math.min(canvas.width, canvas.height) / 2 - ctx.lineWidth, internal.arcStartPoint, internal.arcEndPoint, false);
+
+        ctx.rotate(!canvas.determinate ? internal.rotate : (canvas.percent / 100) * (3 * Math.PI / 2));
+
+        ctx.arc(0, 0, Math.min(canvas.width, canvas.height) / 2 - ctx.lineWidth,
+            !canvas.determinate ? internal.arcStartPoint : 0,
+            !canvas.determinate ? internal.arcEndPoint : (canvas.percent / 100) * (2 * Math.PI),
+            false);
+
         ctx.stroke();
     }
 }
