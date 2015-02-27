@@ -29,9 +29,14 @@ Controls.RadioButton {
     property color color: darkBackground ? Theme.dark.accentColor : Theme.light.accentColor
 
     /*!
-       Set to \c true if the switch is on a dark background
+       Set to \c true if the radio button is on a dark background
      */
     property bool darkBackground
+
+    /*!
+       Set to \c true if the radio button can be toggled from checked to unchecked
+     */
+    property bool toggles
 
     style: ControlStyles.RadioButtonStyle {
         label :Label {
@@ -94,13 +99,29 @@ Controls.RadioButton {
     }
 
     Ink {
+        id: inkArea
         anchors.left: parent.left
         width: units.dp(48)
         height: units.dp(48)
         color: radioButton.checked ? Theme.alpha(radioButton.color, 0.20) : Qt.rgba(0,0,0,0.1)
-        onClicked: radioButton.checked = !radioButton.checked
-
         circular: true
         centered: true
+        onClicked: {
+            if(radioButton.toggles || !radioButton.checked)
+                radioButton.checked = !radioButton.checked
+        }
+    }
+
+    MouseArea {
+        anchors {
+            left: inkArea.right
+            top: parent.top
+            right: parent.right
+            bottom: parent.bottom
+        }
+        onClicked: {
+            if(radioButton.toggles || !radioButton.checked)
+                radioButton.checked = !radioButton.checked
+        }
     }
 }

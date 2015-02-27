@@ -1,7 +1,17 @@
 QML Material CHANGELOG
 ======================
 
+ * Move popovers as necessary to prevent them being clipped by the window
+ * [PageStack] Add support for a divided page and toolbar
+ * Rename list item and IconButton onTriggered to onClicked
+ * [Toolbar] Add support for custom and extended content in the toolbar
+ * [PageStack] Make Page a FocusScope
+ * [Dialog] Refactor the dialog code to use anchors
+ * [Snackbar] Improve the snackbar and add support for mobile layouts
+ * Minor bug fixes and code improvements
 
+
+### Version 0.0.4 (February 20, 2015)
  * Hide the CSD window controls when client-side decorations are disabled
  * Improve the dialog component to better follow Material Design
  * Add the Material Design Checkbox component
@@ -10,3 +20,14 @@ QML Material CHANGELOG
  * Add the Material Design menu field component
  * Improve the layout of the Standard list item
  * Add an equals symbol to the "extra" icon collection
+ * Add a right mode to the navigation drawer
+ * Allow pages to customize the action count in the toolbar
+ * [Palette] Update with color swatches from Material Design
+ * [Demo] Add color picker to change theme colors
+ * [Dialog] Fix an issue preventing popovers from working
+ * [MenuField] Fix issues with the menu not being the right size
+ * [Demo] Clean up and refactor the demo
+ * [Slider] change check for activeFocus to focus so we can set it
+ * [Ink] Remove PRESSED debug message
+ * [Theme] Add a method for determining if a color is dark or light
+ * [PageStack] Fixes and improvements to the page stack and toolbar
