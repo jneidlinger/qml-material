@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Layouts 1.1
 import Material 0.1
 
 Item {
@@ -25,6 +26,43 @@ Item {
                     from: 0
                     to: 1
                 }
+            }
+        }
+
+        RowLayout {
+            Label {
+                text: "Default"
+            }
+            CircularProgress {}
+        }
+
+        RowLayout {
+            Label {
+                text: "Custom Color"
+            }
+            CircularProgress {
+                color: "#E91E63"
+            }
+        }
+
+        RowLayout {
+            Label {
+                text: "Cyclic Colors"
+            }
+            CircularProgress {
+                cycleColors: true
+            }
+        }
+
+
+        RowLayout {
+            Label {
+                text: "Custom Size"
+            }
+            CircularProgress {
+                width: units.dp(64)
+                height: units.dp(64)
+                cycleColors: true
             }
         }
     }
