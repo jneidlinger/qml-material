@@ -99,10 +99,14 @@ Controls.RadioButton {
     }
 
     Ink {
-        id: inkArea
-        anchors.left: parent.left
-        width: units.dp(48)
-        height: units.dp(48)
+        anchors {
+            left: parent.left
+            leftMargin: units.dp(4)
+            verticalCenter: parent.verticalCenter
+        }
+
+        width: units.dp(40)
+        height: units.dp(40)
         color: radioButton.checked ? Theme.alpha(radioButton.color, 0.20) : Qt.rgba(0,0,0,0.1)
         circular: true
         centered: true
