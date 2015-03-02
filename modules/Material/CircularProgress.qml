@@ -27,11 +27,6 @@ Canvas {
     onPaint: drawSpinner();
 
     /*!
-       Set to \c true to cycle the colors automatically
-     */
-    property bool cycleColors : false
-
-    /*!
        Sets the color of the progress indicator. This value is ignored
        if cycleColors is set to true
      */
@@ -64,9 +59,6 @@ Canvas {
     QtObject {
         id: internal
 
-        property color cycleColor: "red"
-        onCycleColorChanged: canvas.requestPaint();
-
         property real arcEndPoint: 0
         onArcEndPointChanged: canvas.requestPaint();
 
@@ -75,10 +67,12 @@ Canvas {
 
         property real rotate: 0
         onRotateChanged: canvas.requestPaint();
+
+        property real longDash: 3 * Math.PI / 2
+        property real shortDash: 19 * Math.PI / 10
     }
 
     NumberAnimation {
-        id: animateCanvasRotation
         target: internal
         properties: "rotate"
         from: 0
@@ -86,70 +80,51 @@ Canvas {
         loops: Animation.Infinite
         running: !determinate
         easing.type: Easing.Linear
-        duration: 2000
+        duration: 3000
     }
 
     SequentialAnimation {
         running: !determinate
         loops: Animation.Infinite
-        NumberAnimation {
-            id: animateOpacity
-            target: internal
-            properties: "arcEndPoint"
-            from: 0
-            to: 2 * Math.PI - 0.001
-            easing.type: Easing.InOutQuad
-            duration: 1200
-        }
-        NumberAnimation {
-            id: animateStartPoint
-            target: internal
-            properties: "arcStartPoint"
-            from: 0
-            to: 2 * Math.PI - 0.001
-            easing.type: Easing.InOutQuad
-            duration: 1200
-        }
-    }
 
-    SequentialAnimation {
-        running: cycleColors
-        loops: Animation.Infinite
+        ParallelAnimation {
+            NumberAnimation {
+                target: internal
+                properties: "arcEndPoint"
+                from: 0
+                to: internal.longDash
+                easing.type: Easing.InOutCubic
+                duration: 800
+            }
 
-        ColorAnimation {
-            from: "red"
-            to: "blue"
-            target: internal
-            properties: "cycleColor"
-            easing.type: Easing.InOutQuad
-            duration: 2400
+            NumberAnimation {
+                target: internal
+                properties: "arcStartPoint"
+                from: internal.shortDash
+                to: 2 * Math.PI - 0.001
+                easing.type: Easing.InOutCubic
+                duration: 800
+            }
         }
 
-        ColorAnimation {
-            from: "blue"
-            to: "green"
-            target: internal
-            properties: "cycleColor"
-            easing.type: Easing.InOutQuad
-            duration: 1560
-        }
+        ParallelAnimation {
+            NumberAnimation {
+                target: internal
+                properties: "arcEndPoint"
+                from: internal.longDash
+                to: 2 * Math.PI - 0.001
+                easing.type: Easing.InOutCubic
+                duration: 800
+            }
 
-        ColorAnimation {
-            from: "green"
-            to: "#FFCC00"
-            target: internal
-            properties: "cycleColor"
-            easing.type: Easing.InOutQuad
-            duration:  840
-        }
-
-        ColorAnimation {
-            from: "#FFCC00"
-            to: "red"
-            target: internal
-            properties: "cycleColor"
-            easing.type: Easing.InOutQuad
-            duration:  1200
+            NumberAnimation {
+                target: internal
+                properties: "arcStartPoint"
+                from: 0
+                to: internal.shortDash
+                easing.type: Easing.InOutCubic
+                duration: 800
+            }
         }
     }
 
