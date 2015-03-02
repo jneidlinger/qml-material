@@ -58,7 +58,7 @@ Object {
        complements the primary color palette at
        \l {http://www.google.com/design/spec/style/color.html#color-color-palette}.
     */
-    property color accentColor: "#ff4081"
+    property color accentColor: "#009688"
 
     /*!
        The default background color for the application.
@@ -110,6 +110,17 @@ Object {
             return lightColor
         else
             return darkColor
+    }
+
+    /*!
+       Returns true if the color is dark and should have light content on top
+     */
+    function isDarkColor(background) {
+        var temp = Qt.darker(background, 1)
+
+        var a = 1 - ( 0.299 * temp.r + 0.587 * temp.g + 0.114 * temp.b);
+
+        return temp.a >= 0 && a >= 0.3
     }
 
     // TODO: Load all the fonts!

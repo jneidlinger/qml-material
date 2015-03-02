@@ -79,15 +79,6 @@ Controls.ApplicationWindow {
         id: __theme
     }
 
-    Toolbar {
-        id: __toolbar
-        width: parent.width
-        backgroundColor: Theme.primaryColor
-        z: 1
-
-        clientSideDecorations: app.clientSideDecorations
-    }
-
     PageStack {
         id: __pageStack
         anchors {
@@ -102,42 +93,20 @@ Controls.ApplicationWindow {
         onReplaced: __toolbar.replace(page)
     }
 
+    Toolbar {
+        id: __toolbar
+        width: parent.width
+        backgroundColor: Theme.primaryColor
+        clientSideDecorations: app.clientSideDecorations
+    }
 
-    Rectangle {
+    OverlayLayer {
+        id: dialogOverlayLayer
+        objectName: "dialogOverlayLayer"
+    }
+
+    OverlayLayer {
         id: overlayLayer
-        objectName: "overlayLayer"
-
-        anchors.fill: parent
-        z: 100
-
-        property Item currentOverlay
-        color: "transparent"
-
-        states: State {
-            name: "ShowState"
-            when: overlayLayer.currentOverlay != null
-
-            PropertyChanges {
-                target: overlayLayer
-                color: currentOverlay.backdropColor
-            }
-        }
-
-        transitions: Transition {
-            ColorAnimation {
-                duration: 300
-                easing.type: Easing.InOutQuad
-            }
-
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            enabled: overlayLayer.currentOverlay != null
-            hoverEnabled: enabled
-            onClicked: overlayLayer.currentOverlay.close()
-            onWheel: wheel.accepted = true
-        }
     }
 
     width: units.dp(800)

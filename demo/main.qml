@@ -11,22 +11,21 @@ ApplicationWindow {
         accentColor: "#009688"
     }
 
-    initialPage: page
-
-    property var components: ["Button", "Checkbox", "Dialog", "Forms", "Icon", "List Items", "Page Stack", "Progress Bar", "Radio Button", "Slider", "Switch", "TextField"]
+    property var components: [
+            "Button", "Checkbox", "Dialog", "Forms", "Icon", "List Items", "Page Stack",
+            "Progress Bar", "Radio Button", "Slider", "Switch", "TextField"
+    ]
 
     property string selectedComponent: components[0]
 
-    Page {
-        id: page
-
+    initialPage: Page {
         title: "Component Demo"
-
-        ListItem.Standard {}
 
         actions: [
             Action {
-                iconName: "content/add"
+                iconName: "image/color_lens"
+                name: "Colors"
+                onTriggered: colorPicker.show()
             },
 
             Action {
@@ -61,23 +60,89 @@ ApplicationWindow {
                     delegate: ListItem.Standard {
                         text: modelData
                         selected: modelData == selectedComponent
-                        onTriggered: selectedComponent = modelData
+                        onClicked: selectedComponent = modelData
                     }
                 }
             }
         }
-
-        Loader {
+        Flickable {
+            id: flickable
             anchors {
                 left: sidebar.right
                 right: parent.right
                 top: parent.top
                 bottom: parent.bottom
             }
+            clip: true
+            contentHeight: Math.max(example.implicitHeight, height)
+            Loader {
+                id: example
+                anchors.fill: parent
+                // selectedComponent will always be valid, as it defaults to the first component
+                source: Qt.resolvedUrl("%1Demo.qml").arg(selectedComponent.replace(" ", ""))
+            }
+        }
+        Scrollbar {
+            flickableItem: flickable
+        }
+    }
 
-            // selectedComponent will always be valid, as it defaults to the first component
-            source: Qt.resolvedUrl("%1Demo.qml").arg(selectedComponent.replace(" ", ""))
-            asynchronous: true
+    Dialog {
+        id: colorPicker
+        title: "Pick color"
+
+        positiveButtonText: "Done"
+
+        MenuField {
+            id: selection
+            model: ["Primary color", "Accent color", "Background color"]
+            width: units.dp(160)
+        }
+
+        Grid {
+            columns: 7
+            spacing: units.dp(8)
+
+            Repeater {
+                model: [
+                    "red", "pink", "purple", "deepPurple", "indigo",
+                    "blue", "lightBlue", "cyan", "teal", "green",
+                    "lightGreen", "lime", "yellow", "amber", "orange",
+                    "deepOrange", "grey", "blueGrey", "brown", "black",
+                    "white"
+                ]
+
+                Rectangle {
+                    width: units.dp(30)
+                    height: units.dp(30)
+                    radius: units.dp(2)
+                    color: Palette.colors[modelData]["500"]
+                    border.width: modelData === "white" ? units.dp(2) : 0
+                    border.color: Theme.alpha("#000", 0.26)
+
+                    Ink {
+                        anchors.fill: parent
+
+                        onPressed: {
+                            switch(selection.selectedIndex) {
+                                case 0:
+                                    theme.primaryColor = parent.color
+                                    break;
+                                case 1:
+                                    theme.accentColor = parent.color
+                                    break;
+                                case 2:
+                                    theme.backgroundColor = parent.color
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        onRejected: {
+            // TODO set default colors again but we currently don't know what that is
         }
     }
 }

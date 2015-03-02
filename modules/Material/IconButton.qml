@@ -22,12 +22,12 @@ import Material.Extras 0.1
 Icon {
     id: icon
 
-    signal triggered
+    signal clicked
 
     name: action ? action.iconName : ""
     enabled: action ? action.enabled : true
 
-    onTriggered: {
+    onClicked: {
         if (action) action.triggered(icon)
     }
 
@@ -41,14 +41,15 @@ Icon {
         anchors.centerIn: parent
 
         enabled: icon.enabled
+        centered: true
         circular: true
 
-        width: parent.width + units.dp(8)
-        height: parent.height + units.dp(8)
+        width: parent.width + units.dp(20)
+        height: parent.height + units.dp(20)
 
         onClicked: {
             //ink.focused = true
-            icon.triggered()
+            icon.clicked()
         }
     }
 
