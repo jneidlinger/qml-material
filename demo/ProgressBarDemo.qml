@@ -50,7 +50,47 @@ Item {
                 text: "Cyclic Colors"
             }
             CircularProgress {
-                cycleColors: true
+                id: cyclicColorProgress
+                SequentialAnimation {
+                    running: true
+                    loops: Animation.Infinite
+
+                    ColorAnimation {
+                        from: "red"
+                        to: "blue"
+                        target: cyclicColorProgress
+                        properties: "color"
+                        easing.type: Easing.InOutQuad
+                        duration: 2400
+                    }
+
+                    ColorAnimation {
+                        from: "blue"
+                        to: "green"
+                        target: cyclicColorProgress
+                        properties: "color"
+                        easing.type: Easing.InOutQuad
+                        duration: 1560
+                    }
+
+                    ColorAnimation {
+                        from: "green"
+                        to: "#FFCC00"
+                        target: cyclicColorProgress
+                        properties: "color"
+                        easing.type: Easing.InOutQuad
+                        duration:  840
+                    }
+
+                    ColorAnimation {
+                        from: "#FFCC00"
+                        to: "red"
+                        target: cyclicColorProgress
+                        properties: "color"
+                        easing.type: Easing.InOutQuad
+                        duration:  1200
+                    }
+                }
             }
         }
 
@@ -62,7 +102,6 @@ Item {
             CircularProgress {
                 width: units.dp(64)
                 height: units.dp(64)
-                cycleColors: true
             }
         }
 
@@ -82,7 +121,6 @@ Item {
             CircularProgress {
                 width: units.dp(64)
                 height: units.dp(64)
-                cycleColors: false
                 determinate: true
                 percent: percentage.value
 
