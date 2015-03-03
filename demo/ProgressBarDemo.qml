@@ -43,105 +43,122 @@ Item {
             indeterminate: true
         }
 
-        RowLayout {
-            Label {
-                text: "Default"
-            }
-            CircularProgress {}
+        Label {
+            text: "Default"
         }
 
-        RowLayout {
-            Label {
-                text: "Custom Color"
-            }
-            CircularProgress {
-                color: "#E91E63"
-            }
+        ProgressCircle {
+            Layout.alignment: Qt.AlignCenter
         }
 
-        RowLayout {
-            Label {
-                text: "Cyclic Colors"
-            }
-            CircularProgress {
-                id: cyclicColorProgress
-                SequentialAnimation {
-                    running: true
-                    loops: Animation.Infinite
+        Label {
+            text: "Custom Color"
+        }
 
-                    ColorAnimation {
-                        from: "red"
-                        to: "blue"
-                        target: cyclicColorProgress
-                        properties: "color"
-                        easing.type: Easing.InOutQuad
-                        duration: 2400
-                    }
+        ProgressCircle {
+            Layout.alignment: Qt.AlignCenter
+            color: "#E91E63"
+        }
 
-                    ColorAnimation {
-                        from: "blue"
-                        to: "green"
-                        target: cyclicColorProgress
-                        properties: "color"
-                        easing.type: Easing.InOutQuad
-                        duration: 1560
-                    }
+        Label {
+            text: "Cyclic Colors"
+        }
 
-                    ColorAnimation {
-                        from: "green"
-                        to: "#FFCC00"
-                        target: cyclicColorProgress
-                        properties: "color"
-                        easing.type: Easing.InOutQuad
-                        duration:  840
-                    }
+        ProgressCircle {
+            id: cyclicColorProgress
+            Layout.alignment: Qt.AlignCenter
+            SequentialAnimation {
+                running: true
+                loops: Animation.Infinite
 
-                    ColorAnimation {
-                        from: "#FFCC00"
-                        to: "red"
-                        target: cyclicColorProgress
-                        properties: "color"
-                        easing.type: Easing.InOutQuad
-                        duration:  1200
-                    }
+                ColorAnimation {
+                    from: "red"
+                    to: "blue"
+                    target: cyclicColorProgress
+                    properties: "color"
+                    easing.type: Easing.InOutQuad
+                    duration: 2400
+                }
+
+                ColorAnimation {
+                    from: "blue"
+                    to: "green"
+                    target: cyclicColorProgress
+                    properties: "color"
+                    easing.type: Easing.InOutQuad
+                    duration: 1560
+                }
+
+                ColorAnimation {
+                    from: "green"
+                    to: "#FFCC00"
+                    target: cyclicColorProgress
+                    properties: "color"
+                    easing.type: Easing.InOutQuad
+                    duration:  840
+                }
+
+                ColorAnimation {
+                    from: "#FFCC00"
+                    to: "red"
+                    target: cyclicColorProgress
+                    properties: "color"
+                    easing.type: Easing.InOutQuad
+                    duration:  1200
                 }
             }
         }
 
-
-        RowLayout {
-            Label {
-                text: "Custom Size"
-            }
-            CircularProgress {
-                width: units.dp(64)
-                height: units.dp(64)
-            }
+        Label {
+            text: "Custom Size"
         }
 
-        RowLayout {
-            Label {
-                text: "Determinate Value"
-            }
+        ProgressCircle {
+            Layout.alignment: Qt.AlignCenter
+            width: units.dp(64)
+            height: units.dp(64)
+        }
 
-            Slider {
-                id: percentage
-                stepSize: 1
-                minimumValue: 0
-                maximumValue: 100
-                value: 26
-            }
+        Label {
+            text: "Custom Size + Thickness"
+        }
 
-            CircularProgress {
-                width: units.dp(64)
-                height: units.dp(64)
-                determinate: true
-                percent: percentage.value
+        ProgressCircle {
+            Layout.alignment: Qt.AlignCenter
+            width: units.dp(64)
+            height: units.dp(64)
+            dashThickness: units.dp(8)
+        }
 
-                Label {
-                    anchors.centerIn: parent
-                    text: percentage.value
+        Label {
+            text: "Determinate Value"
+        }
+
+        ProgressCircle {
+            id: determinateProgress
+            Layout.alignment: Qt.AlignCenter
+            width: units.dp(64)
+            height: units.dp(64)
+            indeterminate: false
+            minimumValue: 0
+            maximumValue: 100
+
+            SequentialAnimation on value {
+                running: true
+                loops: NumberAnimation.Infinite
+
+                NumberAnimation {
+                    duration: 3000
+                    from: determinateProgress.minimumValue
+                    to: determinateProgress.maximumValue
                 }
+
+                PauseAnimation { duration: 1000 }
+            }
+
+            Label {
+                anchors.centerIn: parent
+                text: Math.round(determinateProgress.value) + "%"
             }
         }
     }
