@@ -1,6 +1,10 @@
 QML Material CHANGELOG
 ======================
 
+ * Add a ProgressCircle component following the Google spec
+
+### Version 0.0.5 (March 4, 2015)
+
  * Move popovers as necessary to prevent them being clipped by the window
  * [PageStack] Add support for a divided page and toolbar
  * Rename list item and IconButton onTriggered to onClicked
