@@ -104,13 +104,13 @@ Controls.ProgressBar {
                 from: 0
                 to: 2 * Math.PI
                 loops: Animation.Infinite
-                running: control.indeterminate
+                running: control.indeterminate && canvas.visible
                 easing.type: Easing.Linear
                 duration: 3000
             }
 
             SequentialAnimation {
-                running: control.indeterminate
+                running: control.indeterminate && canvas.visible
                 loops: Animation.Infinite
 
                 ParallelAnimation {
