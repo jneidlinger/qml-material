@@ -48,7 +48,7 @@ PopupBase {
     property alias text: textLabel.text
 
 	property alias negativeButton: negativeButton
-	property alias positionButton: positiveButton
+	property alias positiveButton: positiveButton
 
     property string negativeButtonText: "Cancel"
     property string positiveButtonText: "Ok"
