@@ -21,6 +21,28 @@ Item {
         }
 
         Button {
+            text: "Disabled Raised Button"
+            elevation: 1
+            enabled: false
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Rectangle {
+            color: "black"
+            width: darkBackgroundButton.implicitWidth + units.dp(24)
+            height: darkBackgroundButton.implicitHeight + units.dp(24)
+            anchors.horizontalCenter: parent.horizontalCenter
+            Button {
+                id: darkBackgroundButton
+                anchors.centerIn: parent
+                text: "Disabled Raised Button"
+                elevation: 1
+                enabled: false
+                darkBackground: true
+            }
+        }
+
+        Button {
             text: "Wide Button"
 
             width: units.dp(200)
