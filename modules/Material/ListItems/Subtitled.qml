@@ -31,6 +31,9 @@ BaseListItem {
 
     property alias action: actionItem.children
     property alias secondaryItem: secondaryItem.children
+    property alias content: contentItem.children
+
+    interactive: contentItem.children.length == 0
 
     property alias label: label
     property alias subLabel: subLabel
@@ -97,6 +100,15 @@ BaseListItem {
                 }
             }
 
+            Item {
+                id: contentItem
+
+                Layout.fillWidth: true
+
+                visible: children.length > 0
+                height: visible ? subLabel.implicitHeight : 0
+            }
+
             Label {
                 id: subLabel
                 Layout.fillWidth: true
@@ -106,7 +118,7 @@ BaseListItem {
                 wrapMode: Text.WordWrap
                 style: "body1"
 
-                visible: text != ""
+                visible: text != "" && !contentItem.visible
                 maximumLineCount: listItem.maximumLineCount - 1
             }
         }
