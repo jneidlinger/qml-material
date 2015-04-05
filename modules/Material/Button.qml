@@ -28,7 +28,7 @@ Controls.Button {
     property color textColor: Theme.lightDark(button.backgroundColor,
                                               Theme.light.textColor,
                                               Theme.dark.textColor)
-    property string context: "default" // or "dialog"
+    property string context: "default" // or "dialog" or "snackbar"
 
     /*!
        Set to \c true if the button is on a dark background
@@ -36,6 +36,13 @@ Controls.Button {
     property bool darkBackground
 
     style: ControlStyles.ButtonStyle {
+        padding {
+            left: 0
+            right: 0
+            top: 0
+            bottom: 0
+        }
+
         background: View {
             radius: units.dp(2)
 
@@ -64,7 +71,7 @@ Controls.Button {
                 id: mouseArea
 
                 anchors.fill: parent
-                focused: control.focus && button.context != "dialog"
+                focused: control.focus && button.context != "dialog" && button.context != "snackbar"
                 focusWidth: parent.width - units.dp(30)
                 focusColor: Qt.darker(button.backgroundColor, 1.05)
 
@@ -78,9 +85,9 @@ Controls.Button {
         }
         label: Item {
             implicitHeight: Math.max(units.dp(36), label.height + units.dp(16))
-            implicitWidth: button.context == "dialog"
-                    ? Math.max(units.dp(64), label.width + units.dp(16))
-                    : Math.max(units.dp(88), label.width + units.dp(32))
+            implicitWidth: button.context == "dialog" ? Math.max(units.dp(64), label.width + units.dp(16))
+                         : button.context == "snackbar" ? label.width + units.dp(16)
+                         : Math.max(units.dp(88), label.width + units.dp(32))
 
             Label {
                 id: label

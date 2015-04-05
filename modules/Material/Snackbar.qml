@@ -24,7 +24,7 @@ View {
 	radius: fullWidth ? 0 : units.dp(2)
 	backgroundColor: "#323232"
 	height: units.dp(48)
-	width: fullWidth ? parent.width : Math.min(implicitWidth, units.dp(568))
+	width: fullWidth ? parent.width : Math.min(Math.max(implicitWidth, units.dp(288)), units.dp(568))
 	opacity: opened ? 1 : 0
 
 	implicitWidth: buttonText == "" ? snackText.paintedWidth + units.dp(48) : snackText.paintedWidth + units.dp(72) + snackButton.width
@@ -48,6 +48,7 @@ View {
 	}
 
 	property string buttonText
+	property color buttonColor: Theme.accentColor
 	property string text
 	property bool opened
 	property int duration: 2000
@@ -57,7 +58,7 @@ View {
 	function open(text) {
 		snackbar.text = text
 		opened = true;
-		timer.start();
+		timer.restart();
 	}
 
 	Timer {
@@ -90,17 +91,22 @@ View {
 	Button {
 		id: snackButton
 		opacity: snackbar.buttonText == "" ? 0 : 1
-		textColor: "white"
+		textColor: snackbar.buttonColor
 		text: snackbar.buttonText
+		context: "snackbar"
 		onClicked: snackbar.clicked()
 		anchors {
 			right: parent.right
 			//left: snackText.right
 			top: parent.top
 			bottom: parent.bottom
-			topMargin: units.dp(16)
-			bottomMargin: units.dp(16)
-			rightMargin: snackbar.buttonText == "" ? 0 : units.dp(24)
+
+			// Recommended button touch target is 36dp
+			topMargin: units.dp(6)
+			bottomMargin: units.dp(6)
+
+			// Normal margin is 24dp, but button itself uses 8dp margins
+			rightMargin: snackbar.buttonText == "" ? 0 : units.dp(16)
 		}
 	}
 
