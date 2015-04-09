@@ -3,6 +3,9 @@ QML Material CHANGELOG
 
  * Add a ProgressCircle component following the Google spec
  * Add a tooltip component and use it in the ActionBar
+ * [Tooltip] Clean up the code and improve the style
+ * [Tooltip] Clean up the code and implement desktop-sized tooltips
+ * Add an OverlayView component for view transitions  
 
 ### Version 0.0.5 (March 4, 2015)
 
