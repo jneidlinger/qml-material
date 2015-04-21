@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.0
 import QtQuick.Controls 1.2 as Controls
 import QtQuick.Controls.Styles 1.2 as ControlStyles
@@ -26,7 +27,8 @@ Controls.RadioButton {
     /*!
        The switch color. By default this is the app's accent color
      */
-    property color color: darkBackground ? Theme.dark.accentColor : Theme.light.accentColor
+    property color color: darkBackground ? Theme.dark.accentColor
+                                         : Theme.light.accentColor
 
     /*!
        Set to \c true if the radio button is on a dark background
@@ -64,9 +66,12 @@ Controls.RadioButton {
                 implicitHeight: units.dp(20)
                 radius: implicitHeight / 2
                 color: "transparent"
-                border.color: control.enabled ? control.checked ? radioButton.color
-                              : radioButton.darkBackground ? Theme.alpha("#fff", 0.70) : Theme.alpha("#000", 0.54)
-                              : radioButton.darkBackground ? Theme.alpha("#fff", 0.30) : Theme.alpha("#000", 0.26)
+                border.color: control.enabled
+                    ? control.checked ? radioButton.color
+                                      : radioButton.darkBackground ? Theme.alpha("#fff", 0.70)
+                                                                   : Theme.alpha("#000", 0.54)
+                    : radioButton.darkBackground ? Theme.alpha("#fff", 0.30)
+                                                 : Theme.alpha("#000", 0.26)
                 border.width: units.dp(2)
                 antialiasing: true
 
@@ -99,10 +104,14 @@ Controls.RadioButton {
     }
 
     Ink {
-        id: inkArea
-        anchors.left: parent.left
-        width: units.dp(48)
-        height: units.dp(48)
+        anchors {
+            left: parent.left
+            leftMargin: units.dp(4)
+            verticalCenter: parent.verticalCenter
+        }
+
+        width: units.dp(40)
+        height: units.dp(40)
         color: radioButton.checked ? Theme.alpha(radioButton.color, 0.20) : Qt.rgba(0,0,0,0.1)
         circular: true
         centered: true

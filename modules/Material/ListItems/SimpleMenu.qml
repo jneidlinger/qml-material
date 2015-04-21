@@ -9,7 +9,7 @@ Subtitled {
 
     subText: listView.currentItem.text
 
-    onTriggered: menu.open(listItem, units.dp(16), 0)
+    onClicked: menu.open(listItem, units.dp(16), 0)
 
     Dropdown {
         id: menu
@@ -30,14 +30,14 @@ Subtitled {
             }
 
             interactive: false
-            height: contentHeight
+            height: count > 0 ? contentHeight : 0
 
             delegate: Standard {
                 id: delegateItem
 
                 text: modelData
 
-                onTriggered: {
+                onClicked: {
                     listView.currentIndex = index
                     menu.close()
                 }
@@ -45,4 +45,3 @@ Subtitled {
         }
     }
 }
-

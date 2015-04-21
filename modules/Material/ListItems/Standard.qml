@@ -16,8 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.1
-import ".."
+import Material 0.1
 
 BaseListItem {
     id: listItem
@@ -28,12 +29,16 @@ BaseListItem {
     property alias valueText: valueLabel.text
 
     property alias action: actionItem.children
+    property alias iconName: icon.name
     property alias secondaryItem: secondaryItem.children
     property alias content: contentItem.children
 
     property alias itemLabel: label
 
-    dividerInset: actionItem.children.length == 0 ? 0 : listItem.height
+    property alias textColor: label.color
+    property alias iconColor: icon.color
+
+    dividerInset: actionItem.visible ? listItem.height : 0 
 
     interactive: contentItem.children.length == 0
 
@@ -48,11 +53,24 @@ BaseListItem {
         Item {
             id: actionItem
 
-            Layout.preferredWidth: children.length === 0 ? 0 : units.dp(36)
+            Layout.preferredWidth: units.dp(40)
             Layout.preferredHeight: width
             Layout.alignment: Qt.AlignCenter
 
-            visible: children.length > 0
+            visible: children.length > 1 || iconName != ""
+
+            Icon {
+                id: icon
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                }
+
+                visible: name != ""
+                color: listItem.selected ? Theme.primaryColor : Theme.light.iconColor
+                size: units.dp(24)
+            }
         }
 
         ColumnLayout {
@@ -76,6 +94,8 @@ BaseListItem {
 
                 elide: Text.ElideRight
                 style: "subheading"
+
+                color: listItem.selected ? Theme.primaryColor : Theme.light.textColor
 
                 visible: !contentItem.visible
             }

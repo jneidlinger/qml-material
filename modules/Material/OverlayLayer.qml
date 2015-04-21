@@ -23,7 +23,6 @@ Rectangle {
     objectName: "overlayLayer"
 
     anchors.fill: parent
-    z: 100
 
     property Item currentOverlay
     color: "transparent"
@@ -34,7 +33,7 @@ Rectangle {
 
         PropertyChanges {
             target: overlayLayer
-            color: currentOverlay.backdropColor
+            color: currentOverlay.overlayColor
         }
     }
 
@@ -43,12 +42,11 @@ Rectangle {
             duration: 300
             easing.type: Easing.InOutQuad
         }
-
     }
 
     MouseArea {
         anchors.fill: parent
-        enabled: overlayLayer.currentOverlay != null
+        enabled: overlayLayer.currentOverlay != null && overlayLayer.currentOverlay.globalMouseAreaEnabled
         hoverEnabled: enabled
         onClicked: overlayLayer.currentOverlay.close()
         onWheel: wheel.accepted = true

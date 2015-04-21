@@ -8,19 +8,31 @@ ApplicationWindow {
     flags: Qt.Window
 
     theme {
-        accentColor: "#009688"
+        primaryColor: Palette.colors["blue"]["500"]
+        primaryDarkColor: Palette.colors["blue"]["700"]
+        accentColor: Palette.colors["teal"]["500"]
+        tabHighlightColor: "white"
     }
 
-    initialPage: page
+    property var styles: [
+            "Icons", "Color Palette", "Typography"
+    ]
 
-    property var components: ["Button", "Checkbox", "Dialog", "Forms", "Icon", "List Items", "Page Stack", "Progress Bar", "Radio Button", "Slider", "Switch", "TextField"]
+    property var basicComponents: [
+            "Button", "CheckBox", "Progress Bar", "Radio Button", 
+            "Slider", "Switch", "TextField"
+    ]
 
-    property string selectedComponent: components[0]
+    property var compoundComponents: [
+            "Dialog", "Forms", "List Items", "Page Stack"
+    ]
 
-    Page {
+    initialPage: Page {
         id: page
 
-        title: "Component Demo"
+        title: "Material Demo"
+
+        tabs: [ "Style", "Basic Components", "Compound Components" ]
 
         actions: [
             Action {
@@ -50,34 +62,57 @@ ApplicationWindow {
             }
         ]
 
-        Sidebar {
-            id: sidebar
+        TabView {
+            id: tabView
+            anchors.fill: parent
+            currentIndex: page.selectedTab
+            model: [
+                styles, basicComponents, compoundComponents
+            ]
 
-            Column {
-                width: parent.width
+            delegate: Item {
+                width: tabView.width
+                height: tabView.height
 
-                Repeater {
-                    model: demo.components
-                    delegate: ListItem.Standard {
-                        text: modelData
-                        selected: modelData == selectedComponent
-                        onTriggered: selectedComponent = modelData
+                property string selectedComponent: modelData[0]
+
+                Sidebar {
+                    id: sidebar
+
+                    Column {
+                        width: parent.width
+
+                        Repeater {
+                            model: modelData
+                            delegate: ListItem.Standard {
+                                text: modelData
+                                selected: modelData == selectedComponent
+                                onClicked: selectedComponent = modelData
+                            }
+                        }
                     }
                 }
+                Flickable {
+                    id: flickable
+                    anchors {
+                        left: sidebar.right
+                        right: parent.right
+                        top: parent.top
+                        bottom: parent.bottom
+                    }
+                    clip: true
+                    contentHeight: Math.max(example.implicitHeight + 40, height)
+                    Loader {
+                        id: example
+                        anchors.fill: parent
+                        // selectedComponent will always be valid, as it defaults to the first component
+                        source: Qt.resolvedUrl("%1Demo.qml").arg(selectedComponent.replace(" ", ""))
+                    }
+                }
+                Scrollbar {
+                    flickableItem: flickable
+                }
             }
-        }
-
-        Loader {
-            anchors {
-                left: sidebar.right
-                right: parent.right
-                top: parent.top
-                bottom: parent.bottom
-            }
-
-            // selectedComponent will always be valid, as it defaults to the first component
-            source: Qt.resolvedUrl("%1Demo.qml").arg(selectedComponent.replace(" ", ""))
-            asynchronous: true
         }
     }
 
@@ -87,57 +122,54 @@ ApplicationWindow {
 
         positiveButtonText: "Done"
 
-        Column {
+        MenuField {
+            id: selection
+            model: ["Primary color", "Accent color", "Background color"]
+            width: units.dp(160)
+        }
+
+        Grid {
+            columns: 7
             spacing: units.dp(8)
 
-            MenuField {
-                id: selection
-                model: ["Primary color", "Accent color", "Background color"]
-                width: units.dp(160)
-            }
+            Repeater {
+                model: [
+                    "red", "pink", "purple", "deepPurple", "indigo",
+                    "blue", "lightBlue", "cyan", "teal", "green",
+                    "lightGreen", "lime", "yellow", "amber", "orange",
+                    "deepOrange", "grey", "blueGrey", "brown", "black",
+                    "white"
+                ]
 
-            Grid {
-                columns: 7
-                spacing: units.dp(8)
+                Rectangle {
+                    width: units.dp(30)
+                    height: units.dp(30)
+                    radius: units.dp(2)
+                    color: Palette.colors[modelData]["500"]
+                    border.width: modelData === "white" ? units.dp(2) : 0
+                    border.color: Theme.alpha("#000", 0.26)
 
-                Repeater {
-                    model: [
-                        "red", "pink", "purple", "deepPurple", "indigo",
-                        "blue", "lightBlue", "cyan", "teal", "green",
-                        "lightGreen", "lime", "yellow", "amber", "orange",
-                        "deepOrange", "grey", "blueGrey", "brown", "black",
-                        "white"
-                    ]
+                    Ink {
+                        anchors.fill: parent
 
-                    Rectangle {
-                        width: units.dp(30)
-                        height: units.dp(30)
-                        radius: units.dp(2)
-                        color: Palette.colors[modelData]["500"]
-                        border.width: modelData === "white" ? units.dp(2) : 0
-                        border.color: Theme.alpha("#000", 0.26)
-
-                        Ink {
-                            anchors.fill: parent
-
-                            onPressed: {
-                                switch(selection.selectedIndex) {
-                                    case 0:
-                                        theme.primaryColor = parent.color
-                                        break;
-                                    case 1:
-                                        theme.accentColor = parent.color
-                                        break;
-                                    case 2:
-                                        theme.backgroundColor = parent.color
-                                        break;
-                                }
+                        onPressed: {
+                            switch(selection.selectedIndex) {
+                                case 0:
+                                    theme.primaryColor = parent.color
+                                    break;
+                                case 1:
+                                    theme.accentColor = parent.color
+                                    break;
+                                case 2:
+                                    theme.backgroundColor = parent.color
+                                    break;
                             }
                         }
                     }
                 }
             }
         }
+        
         onRejected: {
             // TODO set default colors again but we currently don't know what that is
         }

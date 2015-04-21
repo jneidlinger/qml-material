@@ -19,37 +19,51 @@ import QtQuick 2.0
 import Material 0.1
 import Material.Extras 0.1
 
-Icon {
-    id: icon
-
-    signal triggered
-
-    name: action ? action.iconName : ""
-    enabled: action ? action.enabled : true
-
-    onTriggered: {
-        if (action) action.triggered(icon)
-    }
-
-    opacity: enabled ? 1 : 0.6
+Item {
+    id: iconButton
 
     property Action action
+    property string name: action ? action.iconName : ""
+    property alias color: icon.color
+    property alias size: icon.size
+
+    signal clicked
+
+    width: icon.width
+    height: icon.height
+    enabled: action ? action.enabled : true
+    opacity: enabled ? 1 : 0.6
+
+    onClicked: {
+        if (action) action.triggered(icon)
+    }
 
     Ink {
         id: ink
 
         anchors.centerIn: parent
-
-        enabled: icon.enabled
+        enabled: iconButton.enabled
+        centered: true
         circular: true
 
-        width: parent.width + units.dp(8)
-        height: parent.height + units.dp(8)
+        width: parent.width + units.dp(20)
+        height: parent.height + units.dp(20)
+
+        z: 0
 
         onClicked: {
-            //ink.focused = true
-            icon.triggered()
+            iconButton.clicked()
         }
     }
 
+    Icon {
+        id: icon
+
+        name: iconButton.name
+    }
+
+    Tooltip {
+        text: action ? action.name : ""
+        mouseArea: ink
+    }
 }

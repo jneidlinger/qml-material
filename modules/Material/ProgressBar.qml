@@ -1,6 +1,7 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2015 Ricardo Vieira <ricardo.vieira@tecnico.ulisboa.pt>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -16,36 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import QtQuick.Controls 1.3 as Controls
+import QtQuick.Controls.Styles.Material 0.1 as MaterialStyle
 import Material 0.1
 
-Item {
+/*!
+   \qmltype ProgressBar
+   \inqmlmodule Material
+   \ingroup material
 
-    property real progress
-    property alias color: bar.color
+   \brief Visual indicator of progress in some operation.
+*/
 
-    property bool alwaysShow
+Controls.ProgressBar {
+    /*!
+       The color for the progress bar. By default this is
+       the primary color defined in \l Theme::primaryColor
+     */
+    property color color: Theme.primaryColor
 
     width: units.dp(200)
-    height: alwaysShow || (progress > 0 && progress < 1) ? units.dp(4) : 0
+    height: units.dp(4)
 
-    Behavior on height {
-        NumberAnimation { duration: 200 }
-    }
-
-    Rectangle {
-        radius: units.dp(2)
-        color: bar.color
-        opacity: 0.2
-
-        anchors.fill: parent
-    }
-
-    Rectangle {
-        id: bar
-
-        radius: units.dp(2)
-        height: parent.height
-        width: parent.width * progress
-        color: Theme.accentColor
-    }
+    style: MaterialStyle.ProgressBarStyle {}
 }

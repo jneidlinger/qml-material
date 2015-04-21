@@ -79,15 +79,6 @@ Controls.ApplicationWindow {
         id: __theme
     }
 
-    Toolbar {
-        id: __toolbar
-        width: parent.width
-        backgroundColor: Theme.primaryColor
-        z: 1
-
-        clientSideDecorations: app.clientSideDecorations
-    }
-
     PageStack {
         id: __pageStack
         anchors {
@@ -102,9 +93,19 @@ Controls.ApplicationWindow {
         onReplaced: __toolbar.replace(page)
     }
 
+    Toolbar {
+        id: __toolbar
+        clientSideDecorations: app.clientSideDecorations
+    }
+
     OverlayLayer {
         id: dialogOverlayLayer
         objectName: "dialogOverlayLayer"
+    }
+
+    OverlayLayer {
+        id: tooltipOverlayLayer
+        objectName: "tooltipOverlayLayer"
     }
 
     OverlayLayer {

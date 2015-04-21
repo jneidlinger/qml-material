@@ -56,7 +56,7 @@ Object {
        value from \l Screen:pixelDensity, but that property only works from within a \l Window type,
        so this is hardcoded here and we update it from within \l ApplicationWindow
      */
-    property real pixelDensity
+    property real pixelDensity: 4.46
     property real multiplier: Qt.platform.os === "osx" ? (160 / 72) : (160 / 96)
 
     /*!
@@ -64,6 +64,6 @@ Object {
        this anywhere you need to refer to distances on the screen.
      */
     function dp(number) {
-        return number*((pixelDensity*25.4)/160)*multiplier;
+        return Math.round(number*((pixelDensity*25.4)/160)*multiplier);
     }
 }

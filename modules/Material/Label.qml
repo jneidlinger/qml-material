@@ -53,6 +53,12 @@ Text {
             "font": "medium"
         },
 
+        "dialog": {
+            "size": 18,
+            "size_desktop": 17,
+            "font": "regular"
+        },
+
         "subheading": {
             "size": 16,
             "size_desktop": 15,
@@ -85,14 +91,19 @@ Text {
         "button": {
             "size": 14,
             "font": "medium"
+        },
+
+        "tooltip": {
+            "size_desktop": 10,
+            "size": 14,
+            "font": "medium"
         }
     }
 
-    property bool desktop: true
-
     property var fontInfo: fontStyles[style]
 
-    font.pixelSize: units.dp(desktop && fontInfo.size_desktop ? fontInfo.size_desktop : fontInfo.size)
+    font.pixelSize: units.dp(!Device.isMobile && fontInfo.size_desktop 
+            ? fontInfo.size_desktop : fontInfo.size)
     font.family: "Roboto"
     font.weight: {
         var weight = fontInfo.font
