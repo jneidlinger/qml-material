@@ -104,6 +104,7 @@ Controls.RadioButton {
     }
 
     Ink {
+        id: inkArea
         anchors {
             left: parent.left
             leftMargin: units.dp(4)
