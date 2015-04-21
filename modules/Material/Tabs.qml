@@ -23,8 +23,12 @@ Row {
 
     property var tabs: []
     property int selectedIndex: 0
-    property color color: Theme.dark.textColor
-    property color highlight: Theme.dark.accentColor
+
+    property bool darkBackground
+
+    property color color: darkBackground ? Theme.dark.textColor : Theme.light.textColor
+    property color highlightColor: Theme.tabHighlightColor
+    property color textColor: darkBackground ? Theme.dark.textColor : Theme.light.accentColor
 
     height: units.dp(48)
 
@@ -52,7 +56,7 @@ Row {
                 }
 
                 height: units.dp(2)
-                color: tabbar.highlight
+                color: tabbar.highlightColor
                 opacity: tabItem.selected ? 1 : 0
                 //x: index < tabbar.selectedIndex ? tabItem.width : 0
                 //width: index == tabbar.selectedIndex ? tabItem.width : 0
@@ -79,19 +83,33 @@ Row {
 
                 Icon {
                     anchors.verticalCenter: parent.verticalCenter
-                    name: modelData.hasOwnProperty("icon") ? modelData.icon
-                                                           : ""
-                    color: Theme.dark.iconColor
+
+                    name: modelData.hasOwnProperty("icon") ? modelData.icon : ""
+                    color: tabItem.selected 
+                            ? darkBackground ? Theme.dark.iconColor : Theme.light.accentColor
+                            : darkBackground ? Theme.dark.shade(0.6) : Theme.light.shade(0.6)
+
                     visible: name != ""
+
+                    Behavior on color {
+                        ColorAnimation { duration: 200 }
+                    }
                 }
 
                 Label {
                     id: label
-                    text: modelData.hasOwnProperty("text") ? modelData.text
-                                                           : modelData
-                    color: Theme.dark.textColor
+
+                    text: modelData.hasOwnProperty("text") ? modelData.text : modelData
+                    color: tabItem.selected
+                            ? darkBackground ? Theme.dark.textColor : Theme.light.accentColor
+                            : darkBackground ? Theme.dark.shade(0.6) : Theme.light.shade(0.6)
+
                     style: "body2"
                     anchors.verticalCenter: parent.verticalCenter
+
+                    Behavior on color {
+                        ColorAnimation { duration: 200 }
+                    }
                 }
             }
         }
