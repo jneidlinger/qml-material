@@ -10,6 +10,11 @@ QML Material CHANGELOG
  * [Icon] Add a valid property to Icon and AwesomeIcon
  * [Demo] Display all the Material Design icons in the Icons demo
  * Move the QtQuick.Controls style into the modules directory
+ * [Icon] Update the FontAwesome icon table
+ * [RadioButton] Improve selection support
+ * [Demo] Update radio button demo with grouping
+ * [Tests] Add UI tests for the ActionBar component
+
 
 ### Version 0.0.6 (April 16, 2015)
 
@@ -47,6 +52,7 @@ QML Material CHANGELOG
 
 
 ### Version 0.0.4 (February 20, 2015)
+
  * Hide the CSD window controls when client-side decorations are disabled
  * Improve the dialog component to better follow Material Design
  * Add the Material Design Checkbox component

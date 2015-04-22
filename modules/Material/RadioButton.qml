@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Jordan Neidlinger
+ * Copyright (C) 2014-2015 Jordan Neidlinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -38,7 +38,7 @@ Controls.RadioButton {
     /*!
        Set to \c true if the radio button can be toggled from checked to unchecked
      */
-    property bool toggles
+    property bool canToggle
 
     style: ControlStyles.RadioButtonStyle {
         label :Label {
@@ -104,6 +104,7 @@ Controls.RadioButton {
     }
 
     Ink {
+        id: inkArea
         anchors {
             left: parent.left
             leftMargin: units.dp(4)
@@ -113,12 +114,14 @@ Controls.RadioButton {
         width: units.dp(40)
         height: units.dp(40)
         color: radioButton.checked ? Theme.alpha(radioButton.color, 0.20) : Qt.rgba(0,0,0,0.1)
-        circular: true
-        centered: true
+
         onClicked: {
-            if(radioButton.toggles || !radioButton.checked)
+            if(radioButton.canToggle || !radioButton.checked)
                 radioButton.checked = !radioButton.checked
         }
+
+        circular: true
+        centered: true
     }
 
     MouseArea {
@@ -129,7 +132,7 @@ Controls.RadioButton {
             bottom: parent.bottom
         }
         onClicked: {
-            if(radioButton.toggles || !radioButton.checked)
+            if(radioButton.canToggle || !radioButton.checked)
                 radioButton.checked = !radioButton.checked
         }
     }
