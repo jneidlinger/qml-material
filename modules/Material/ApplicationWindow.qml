@@ -124,18 +124,19 @@ Controls.ApplicationWindow {
     height: units.dp(600)
 
     Component.onCompleted: {
+        if (clientSideDecorations)
+            flags |= Qt.FramelessWindowHint
 
         units.pixelDensity = Qt.binding( function() {
-          switch(Qt.platform.os) {
+            switch(Qt.platform.os) {
               case "windows":
               case "osx":
               case "linux":
                   return Screen.logicalPixelDensity;
               default:
                   return Screen.pixelDensity;
-          }
+            }
         });
-
 
         Device.type = Qt.binding(function () {
             var diagonal = Math.sqrt(Math.pow((Screen.width/Screen.pixelDensity), 2) + 
