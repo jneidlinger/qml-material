@@ -22,12 +22,12 @@ import Material 0.1
 import QtGraphicalEffects 1.0
 
 /*!
-   \qmltype ActionBar
+   \qmltype ActionButton
    \inqmlmodule Material 0.1
 
    \brief A floating action button.
 
-   An \l ActionButton is a floating action button that provides a primary action
+   An ActionButton is a floating action button that provides a primary action
    on the current page.
  */
 Controls.Button {
@@ -39,12 +39,12 @@ Controls.Button {
      */
     property color backgroundColor: Theme.accentColor
 
-
     /*!
        \internal
        The elevation of the icon. This will be higher for a white background color.
      */
     property int elevation: backgroundColor == "white" ? 0 : 1
+    
     /*!
        The color of the icon displayed on the action button. By default, this is
        automatically selected based on the \l backgroundColor.
@@ -61,8 +61,11 @@ Controls.Button {
 
     /*!
        Floating action buttons come in two sizes:
-       Default size: For most use cases
-       Mini size: Only used to create visual continuity with other screen elements
+
+       \list
+       \li \b {Default size} - for most use cases
+       \li \b {Mini size} - only used to create visual continuity with other screen elements
+       \endlist
      */
     property bool isMiniSize: false
 

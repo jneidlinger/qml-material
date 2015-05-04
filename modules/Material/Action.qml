@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- import QtQuick 2.0
+import QtQuick 2.0
 
 /*!
    \qmltype Action
@@ -47,6 +47,17 @@ QtObject {
     property string iconName
 
     /*!
+       A URL pointing to an image to display as the icon. By default, this is
+       a special URL representing the icon named by \l iconName from the Material Design
+       icon collection or FontAwesome. The icon will be colorized using the specificed \l color,
+       unless you put ".color." in the filename, for example, "app-icon.color.svg".
+
+       \sa iconName
+       \sa Icon
+      */
+    property string iconSource: "icon://" + iconName
+
+    /*!
        A string representation of a keybinding, for example, "Ctrl+Shift+A" or "Alt+T".
      */
     property string keybinding
@@ -67,6 +78,11 @@ QtObject {
        Set to \c false to hide the action in the UI.
      */
     property bool visible: true
+
+    /*!
+       Set to \c true to rotate the icon 90 degrees on mouseover.
+     */    
+    property bool hoverAnimation: false
 
     /*!
        Called when the UI representing the action is triggered. \c caller contains the UI element

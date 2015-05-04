@@ -33,7 +33,7 @@ PopupBase {
     visible: opacity > 0
 
     width: Math.max(minimumWidth,
-                    content.contentWidth + units.dp(32))
+                    content.contentWidth + 2 * contentMargins)
 
     height: Math.min(units.dp(350),
                      headerView.height + units.dp(32) +
@@ -42,16 +42,32 @@ PopupBase {
                      content.bottomMargin +
                      buttonContainer.height)
 
+    property int contentMargins: units.dp(16)
+
     property int minimumWidth: units.dp(270)
 
     property alias title: titleLabel.text
     property alias text: textLabel.text
 
+    /*!
+       \qmlproperty Button negativeButton
+
+       The negative button, displayed as the leftmost button on the right of the dialog buttons.
+       This is usually used to dismiss the dialog.
+     */
     property alias negativeButton: negativeButton
+
+    /*!
+       \qmlproperty Button primaryButton
+
+       The primary button, displayed as the rightmost button in the dialog buttons row. This is
+       usually used to accept the dialog's action.
+     */
     property alias positiveButton: positiveButton
 
     property string negativeButtonText: "Cancel"
     property string positiveButtonText: "Ok"
+    property alias positiveButtonEnabled: positiveButton.enabled
 
     property bool hasActions: true
 
@@ -73,7 +89,12 @@ PopupBase {
         NumberAnimation { duration: 200 }
     }
 
-    Keys.onEscapePressed: dialog.close()
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Escape || event.key === Qt.Key_Back) {
+            dialog.close()
+            event.accepted = true
+        }
+    }
 
     function show() {
         open()
@@ -156,6 +177,10 @@ PopupBase {
             }
         }
 
+        Rectangle {
+            anchors.fill: content
+        }
+
         Flickable {
             id: content
 
@@ -175,15 +200,17 @@ PopupBase {
             interactive: contentHeight + units.dp(8) > height
             bottomMargin: hasActions ? 0 : units.dp(8)
 
-            Column {
-                id: column
-                anchors {
-                    left: parent.left
-                    margins: units.dp(16)
-                }
+            Rectangle {
+                Column {
+                    id: column
+                    anchors {
+                        left: parent.left
+                        margins: contentMargins
+                    }
 
-                width: content.width - units.dp(32)
-                spacing: units.dp(16)
+                    width: content.width - 2 * contentMargins
+                    spacing: units.dp(16)
+                }
             }
         }
 

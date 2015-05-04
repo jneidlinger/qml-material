@@ -23,6 +23,7 @@ import Material 0.1
 BaseListItem {
     id: listItem
 
+    implicitHeight: units.dp(48)
     height: units.dp(48)
 
     property alias text: label.text
@@ -30,6 +31,7 @@ BaseListItem {
 
     property alias action: actionItem.children
     property alias iconName: icon.name
+    property alias iconSource: icon.source
     property alias secondaryItem: secondaryItem.children
     property alias content: contentItem.children
 
@@ -40,9 +42,30 @@ BaseListItem {
 
     dividerInset: actionItem.visible ? listItem.height : 0 
 
-    interactive: contentItem.children.length == 0
+    interactive: contentItem.children.length === 0
+
+    implicitWidth: {
+        var width = listItem.margins * 2
+
+        if (actionItem.visible)
+            width += actionItem.width + row.spacing
+
+        if (contentItem.visible)
+            width += contentItem.implicitWidth + row.spacing
+        else
+            width += label.implicitWidth + row.spacing
+
+        if (valueLabel.visible)
+            width += valueLabel.width + row.spacing
+
+        if (secondaryItem.visible)
+            width += secondaryItem.width + row.spacing
+
+        return width
+    }
 
     RowLayout {
+        id: row
         anchors.fill: parent
 
         anchors.leftMargin: listItem.margins
@@ -57,7 +80,7 @@ BaseListItem {
             Layout.preferredHeight: width
             Layout.alignment: Qt.AlignCenter
 
-            visible: children.length > 1 || iconName != ""
+            visible: children.length > 1 || icon.valid
 
             Icon {
                 id: icon
@@ -67,7 +90,7 @@ BaseListItem {
                     left: parent.left
                 }
 
-                visible: name != ""
+                visible: valid
                 color: listItem.selected ? Theme.primaryColor : Theme.light.iconColor
                 size: units.dp(24)
             }
@@ -120,7 +143,7 @@ BaseListItem {
             Layout.preferredWidth: childrenRect.width
             Layout.preferredHeight: parent.height
 
-            visible: childrenRect.width > 0
+            visible: children.length > 0
         }
     }
 }

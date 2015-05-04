@@ -23,7 +23,9 @@ Item {
     id: iconButton
 
     property Action action
-    property string name: action ? action.iconName : ""
+    property string iconName
+    property string iconSource: action ? action.iconSource : "icon://" + iconName
+    property bool hoverAnimation: action ? action.hoverAnimation : false
     property alias color: icon.color
     property alias size: icon.size
 
@@ -59,7 +61,13 @@ Item {
     Icon {
         id: icon
 
-        name: iconButton.name
+        source: iconButton.iconSource
+        rotation: iconButton.hoverAnimation ? ink.containsMouse ? 90 : 0
+                                            : 0
+
+        Behavior on rotation {
+            NumberAnimation { duration: 200 }
+        }
     }
 
     Tooltip {

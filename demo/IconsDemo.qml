@@ -25,7 +25,7 @@ Item {
         Column {
             id: content
             width: flickable.width
-            height: implicitHeight + units.dp(16)
+            y: units.dp(8)
 
             Repeater {
                 model: [
@@ -36,13 +36,29 @@ Item {
                 delegate: Column {
                     width: parent.width
 
-                    ListItem.Header {
-                        text: modelData
+                    ListItem.SectionHeader {
+                        id: header
+                        text: modelData + " (" + folderModel.count + ")"
+
+                        ThinDivider {
+                            anchors {
+                                left: parent.left
+                                right: parent.right
+                                top: parent.top
+                            }
+                            visible: header.expanded
+                        }
                     }
 
                     FolderListModel {
                         id: folderModel
                         folder: icon.iconDirectory + "/" + modelData.toLowerCase()
+                    }
+
+                    Item {
+                        width: parent.width
+                        height: units.dp(8)
+                        visible: header.expanded
                     }
 
                     Grid {
@@ -52,6 +68,7 @@ Item {
                             margins: units.dp(16)
                         }
 
+                        visible: header.expanded
                         rowSpacing: units.dp(10)
                         columns: Math.floor(width/units.dp(240))
 
@@ -87,11 +104,41 @@ Item {
                             }
                         }
                     }
+
+                    Item {
+                        width: parent.width
+                        height: units.dp(16)
+                        visible: header.expanded
+                    }
+
+                    ThinDivider {
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                        }
+                        visible: header.expanded
+                    }
                 }
             }
 
-            ListItem.Header {
-                text: "FontAwesome"
+            ListItem.SectionHeader {
+                id: fontHeader
+                text: "FontAwesome" + " (" + awesomeList.count + ")"
+
+                ThinDivider {
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: parent.top
+                    }
+                    visible: fontHeader.expanded
+                }
+            }
+
+            Item {
+                width: parent.width
+                height: units.dp(8)
+                visible: fontHeader.expanded
             }
 
             Grid {
@@ -102,11 +149,13 @@ Item {
                     margins: units.dp(16)
                 }
 
+                visible: fontHeader.expanded
                 rowSpacing: units.dp(10)
                 columns: Math.floor(width/units.dp(240))
 
                 Repeater {
-                    model: ListUtils.objectKeys(awesomeIcon.icons)
+                    id: awesomeList
+                    model: Object.keys(awesomeIcon.icons)
                     delegate: Row {
                         spacing: units.dp(20)
                         width: grid.width/grid.columns

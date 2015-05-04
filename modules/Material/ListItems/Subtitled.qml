@@ -29,11 +29,14 @@ BaseListItem {
     property alias subText: subLabel.text
     property alias valueText: valueLabel.text
 
+    property alias iconName: icon.name
+    property alias iconSource: icon.source
+
     property alias action: actionItem.children
     property alias secondaryItem: secondaryItem.children
     property alias content: contentItem.children
 
-    interactive: contentItem.children.length == 0
+    interactive: contentItem.children.length === 0
 
     property alias label: label
     property alias subLabel: subLabel
@@ -56,12 +59,25 @@ BaseListItem {
         Item {
             id: actionItem
 
-            Layout.preferredWidth: children.length === 0 ? 0 : units.dp(40)
+            Layout.preferredWidth: units.dp(40)
             Layout.preferredHeight: width
             Layout.alignment: Qt.AlignCenter
             Layout.column: 1
 
-            visible: children.length > 0
+            visible: children.length > 1 || icon.valid
+
+            Icon {
+                id: icon
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                }
+
+                visible: valid
+                color: listItem.selected ? Theme.primaryColor : Theme.light.iconColor
+                size: units.dp(24)
+            }
         }
 
         ColumnLayout {

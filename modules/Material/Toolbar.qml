@@ -20,6 +20,15 @@ import QtQuick.Controls 1.2 as Controls
 import QtQuick.Layouts 1.1
 import Material 0.1
 
+
+/*!
+   \qmltype Toolbar
+   \inqmlmodule Material 0.1
+
+   \brief Brief description...
+
+   Details...
+*/
 View {
     id: toolbar
 
@@ -44,8 +53,8 @@ View {
         return height
     }
     property int targetHeight: actionBarHeight + (tabs.length > 0 ? tabbar.height : 0)
-    property int maxActionCount: (Device.formFactor == "desktop"
-                                  ? 5 : Device.formFactor == "tablet" ? 4 : 3)
+    property int maxActionCount: Device.type === Device.desktop
+                                 ? 5 : Device.type === Device.tablet ? 4 : 3
     property bool clientSideDecorations: false
     property string color: "white"
     property var page
@@ -56,15 +65,15 @@ View {
 
     opacity: page && page.actionBar.hidden ? 0 : 1
 
-    backgroundColor: page ? page.actionBar.backgroundColor.a == 0 
+    backgroundColor: page ? page.actionBar.backgroundColor.a === 0
                             ? page.backgroundColor : page.actionBar.backgroundColor
                           : Theme.primaryColor
 
-    implicitHeight: Device.type == Device.phone ? units.dp(48)
-                                                : Device.type == Device.tablet ? units.dp(56)
-                                                                               : units.dp(64)
+    implicitHeight: Device.type == Device.phone || Device.type === Device.phablet 
+            ? units.dp(48) : Device.type == Device.tablet ? units.dp(56) : units.dp(64)
+
     height: targetHeight
-    elevation: backgroundColor == page.color ? 0 : page.actionBar.elevation
+    elevation: backgroundColor === page.color ? 0 : page.actionBar.elevation
     fullWidth: true
     clipContent: true
 
@@ -133,7 +142,7 @@ View {
         anchors.fill: rightSidebarStack
 
         color: page.rightSidebar && page.rightSidebar.actionBar.backgroundColor
-               ? Qt.darker(page.rightSidebar.actionBar.backgroundColor,1).a == 0
+               ? Qt.darker(page.rightSidebar.actionBar.backgroundColor,1).a === 0
                  ? page.rightSidebar.color
                  : page.rightSidebar.actionBar.backgroundColor
                : Theme.primaryColor
@@ -239,7 +248,7 @@ View {
         spacing: units.dp(24)
 
         IconButton {
-            name: "navigation/close"
+            iconName: "navigation/close"
             color: Theme.lightDark(toolbar.backgroundColor, Theme.light.textColor,
                 Theme.dark.textColor)
             onClicked: Qt.quit()
