@@ -22,7 +22,7 @@ import Material 0.1
 
 /*!
    \qmltype ProgressCircle
-   \inqmlmodule Material
+   \inqmlmodule Material 0.1
 
    \brief Visual circular indicator of progress in some operation.
 */
@@ -39,20 +39,15 @@ Controls.ProgressBar {
        The thickness of the progress circle's stroke,
        3 dp by default
      */
-    property real dashThickness: units.dp(3)
+    property real dashThickness: Units.dp(3)
 
-    width: units.dp(32)
-    height: units.dp(32)
+    width: Units.dp(32)
+    height: Units.dp(32)
 
     indeterminate: true
 
     style: Styles.ProgressBarStyle {
         id: progressBarStyle
-        background: Rectangle {
-            implicitWidth: control.width
-            implicitHeight: control.height
-            color: "transparent"
-        }
 
         progress: Canvas {
             id: canvas
@@ -192,10 +187,11 @@ Controls.ProgressBar {
                 height: parent.height
                 transformOrigin: Item.TopLeft
 
-                Loader {
+                Rectangle {
                     id: backgroundLoader
-                    anchors.fill: parent
-                    sourceComponent: background
+                    implicitWidth: control.width
+                    implicitHeight: control.height
+                    color: "transparent"
                 }
 
                 Loader {

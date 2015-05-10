@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -18,6 +18,13 @@
 import QtQuick 2.0
 import Material 0.1
 
+/*!
+   \qmltype Tabs
+   \inqmlmodule Material 0.1
+   \internal
+
+   \brief Provides a tab bar for use in the toolbar.
+ */
 Row {
     id: tabbar
 
@@ -30,7 +37,7 @@ Row {
     property color highlightColor: Theme.tabHighlightColor
     property color textColor: darkBackground ? Theme.dark.textColor : Theme.light.accentColor
 
-    height: units.dp(48)
+    height: Units.dp(48)
 
     Repeater {
         id: repeater
@@ -38,7 +45,7 @@ Row {
 
         delegate: View {
             id: tabItem
-            width:units.dp(48) + row.width
+            width:Units.dp(48) + row.width
             height: tabbar.height
 
             property bool selected: index == tabbar.selectedIndex
@@ -55,7 +62,7 @@ Row {
                     bottom: parent.bottom
                 }
 
-                height: units.dp(2)
+                height: Units.dp(2)
                 color: tabbar.highlightColor
                 opacity: tabItem.selected ? 1 : 0
                 //x: index < tabbar.selectedIndex ? tabItem.width : 0
@@ -79,7 +86,7 @@ Row {
                 id: row
 
                 anchors.centerIn: parent
-                spacing: units.dp(10)
+                spacing: Units.dp(10)
 
                 Icon {
                     anchors.verticalCenter: parent.verticalCenter

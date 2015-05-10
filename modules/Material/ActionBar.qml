@@ -39,8 +39,7 @@ import Material.ListItems 0.1 as ListItem
 Item {
     id: actionBar
 
-    implicitHeight: Device.type === Device.phone || Device.type === Device.phablet
-                    ? units.dp(48) : Device.type == Device.tablet ? units.dp(56) : units.dp(64)
+    implicitHeight: Units.gu(1)
 
     anchors {
         left: parent.left
@@ -153,7 +152,7 @@ Item {
      */
     function openOverflowMenu() {
         if (overflowMenuAvailable && !overflowMenuShowing)
-            overflowMenu.open(overflowButton, units.dp(4), units.dp(-4));
+            overflowMenu.open(overflowButton, Units.dp(4), Units.dp(-4));
     }
 
     /*!
@@ -180,7 +179,7 @@ Item {
         anchors {
             verticalCenter: actionsRow.verticalCenter
             left: parent.left
-            leftMargin: leftItem.show ? units.dp(16) : -leftItem.width
+            leftMargin: leftItem.show ? Units.dp(16) : -leftItem.width
 
             Behavior on leftMargin {
                 NumberAnimation { duration: 200 }
@@ -189,7 +188,7 @@ Item {
 
         color: Theme.lightDark(actionBar.backgroundColor, Theme.light.iconColor,
                                                             Theme.dark.iconColor)
-        size: units.dp(24)
+        size: Units.dp(24)
         action: backAction
 
         opacity: show ? enabled ? 1 : 0.6 : 0
@@ -208,8 +207,8 @@ Item {
             verticalCenter: actionsRow.verticalCenter
             left: parent.left
             right: actionsRow.left
-            leftMargin: leftItem.show ? units.dp(72) : units.dp(16)
-            rightMargin: units.dp(16)
+            leftMargin: leftItem.show ? Units.dp(72) : Units.dp(16)
+            rightMargin: Units.dp(16)
 
             Behavior on leftMargin {
                 NumberAnimation { duration: 200 }
@@ -230,12 +229,12 @@ Item {
 
         anchors {
             right: parent.right
-            rightMargin: units.dp(16)
+            rightMargin: Units.dp(16)
         }
 
         height: parent.implicitHeight
 
-        spacing: units.dp(24)
+        spacing: Units.dp(24)
 
         Repeater {
             model: __internal.visibleActions.length > maxActionCount 
@@ -251,7 +250,7 @@ Item {
 
                 color: Theme.lightDark(actionBar.backgroundColor, Theme.light.iconColor,
                                                                   Theme.dark.iconColor)
-                size: iconSource == "icon://content/add" ? units.dp(27) : units.dp(24)
+                size: iconSource == "icon://content/add" ? Units.dp(27) : Units.dp(24)
                 
                 anchors.verticalCenter: parent ? parent.verticalCenter : undefined
             }
@@ -262,7 +261,7 @@ Item {
 
             iconName: "navigation/more_vert"
             objectName: "action/overflow"
-            size: units.dp(27)
+            size: Units.dp(27)
             color: Theme.lightDark(actionBar.backgroundColor, Theme.light.iconColor,
                                                               Theme.dark.iconColor)
             visible: actionBar.overflowMenuAvailable
@@ -289,7 +288,7 @@ Item {
             top: actionsRow.bottom
             left: label.left
             right: parent.right
-            rightMargin: units.dp(16)
+            rightMargin: Units.dp(16)
         }
     }
 
@@ -297,8 +296,8 @@ Item {
         id: overflowMenu
         objectName: "overflowMenu"
 
-        width: units.dp(250)
-        height: columnView.height + units.dp(16)
+        width: Units.dp(250)
+        height: columnView.height + Units.dp(16)
 
         ColumnLayout {
             id: columnView

@@ -19,6 +19,13 @@ import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 
+/*!
+   \qmltype BottomActionSheet
+   \inqmlmodule Material 0.1
+
+   \brief Represents a bottom sheet displaying a list of actions with an optional title.
+
+ */
 BottomSheet {
     id: bottomSheet
 
@@ -34,14 +41,15 @@ BottomSheet {
 
         anchors.fill: parent
 
-        ListItem.Header {
+        ListItem.Subheader {
             id: header
             text: title
             visible: title !== ""
-            height: units.dp(56)
+            height: Units.dp(56)
             style: "subheading"
             backgroundColor: "white"
             elevation: listView.atYBeginning ? 0 : 1
+            fullWidth: true
             z: 2
         }
 
@@ -60,8 +68,8 @@ BottomSheet {
 
                 interactive: bottomSheet.height < bottomSheet.implicitHeight
                 
-                topMargin: title !== "" ? 0 : units.dp(8)
-                bottomMargin: units.dp(8)
+                topMargin: title !== "" ? 0 : Units.dp(8)
+                bottomMargin: Units.dp(8)
 
                 contentWidth: width
                 contentHeight: subColumn.height
@@ -89,15 +97,8 @@ BottomSheet {
                                 }
                             }
 
-                            Item {
-                                width: parent.width
-                                height: units.dp(16)
+                            ListItem.Divider {
                                 visible: modelData.hasDividerAfter
-
-                                ThinDivider {
-                                    anchors.centerIn: parent
-                                    width: parent.width
-                                }
                             }
                         }
                     }

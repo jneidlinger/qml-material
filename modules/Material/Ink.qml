@@ -1,7 +1,7 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
- * Copyright (C) 2014 Marcin Baszczewski
+ * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
+ *               2014 Marcin Baszczewski
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -20,6 +20,12 @@ import QtQuick 2.0
 import Material 0.1
 import Material.Extras 0.1
 
+/*!
+   \qmltype Ink
+   \inqmlmodule Material 0.1
+
+   \brief Represents a ripple ink animation used in buttons and many other components.
+ */
 MouseArea {
     id: view
 
@@ -36,7 +42,7 @@ MouseArea {
     property bool circular: false
     property bool centered: false
 
-    property int focusWidth: width - units.dp(32)
+    property int focusWidth: width - Units.dp(32)
     property bool focused
     property color focusColor: "transparent"
 
@@ -107,7 +113,7 @@ MouseArea {
 
         width: focused
                 ? focusedState ? focusWidth
-                               : Math.min(parent.width - units.dp(8), focusWidth + units.dp(12))
+                               : Math.min(parent.width - Units.dp(8), focusWidth + Units.dp(12))
                 : parent.width/5
         height: width
 

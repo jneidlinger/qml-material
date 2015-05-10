@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 import QtQuick 2.3
 import QtQuick.Window 2.0
 import Material 0.1
@@ -26,15 +25,13 @@ import QtGraphicalEffects 1.0
    \qmltype Icon
    \inqmlmodule Material 0.1
 
-   \brief Brief description...
-
-   Details...
+   \brief Displays an icon from the Material Design and FontAwesome icon collections.
 */
 Item {
     id: icon
 
     property color color: Theme.light.iconColor
-    property real size: units.dp(24)
+    property real size: Units.dp(24)
 
     /*!
        The name of the icon to display.
@@ -53,7 +50,7 @@ Item {
       */
     property string source: "icon://" + name
 
-    property bool valid: name.indexOf("awesome") == 0 
+    property bool valid: source.indexOf("icon://awesome/") == 0 
             ? awesomeIcon.valid : image.status == Image.Ready
 
     property url iconDirectory: Qt.resolvedUrl("icons")

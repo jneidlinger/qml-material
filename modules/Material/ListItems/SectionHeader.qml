@@ -15,11 +15,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
 import Material 0.1
 
+/*!
+   \qmltype SectionHeader
+   \inqmlmodule Material.ListItems 0.1
+
+   \brief A list item that serves as the the header for an expandable list section.
+ */
 BaseListItem {
     id: listItem
 
@@ -27,7 +32,7 @@ BaseListItem {
     property alias iconName: icon.name
     property bool expanded: false
 
-    height: units.dp(48)
+    height: Units.dp(48)
 
     RowLayout {
         anchors.fill: parent
@@ -35,10 +40,10 @@ BaseListItem {
         anchors.leftMargin: listItem.margins
         anchors.rightMargin: listItem.margins
 
-        spacing: units.dp(16)
+        spacing: Units.dp(16)
 
         Item {
-            Layout.preferredWidth: units.dp(40)
+            Layout.preferredWidth: Units.dp(40)
             Layout.preferredHeight: width
             Layout.alignment: Qt.AlignCenter
 
@@ -54,7 +59,7 @@ BaseListItem {
 
                 visible: name != ""
                 color: listItem.expanded ? Theme.primaryColor : Theme.light.iconColor
-                size: units.dp(24)
+                size: Units.dp(24)
             }
         }
 
@@ -71,7 +76,7 @@ BaseListItem {
         }
 
         Item {
-            Layout.preferredWidth: units.dp(40)
+            Layout.preferredWidth: Units.dp(40)
             Layout.preferredHeight: width
             Layout.alignment: Qt.AlignRight
 
@@ -83,7 +88,7 @@ BaseListItem {
 
                 name: "navigation/expand_more"
                 rotation: listItem.expanded ? 180 : 0
-                size: units.dp(24)
+                size: Units.dp(24)
 
                 Behavior on rotation {
                     NumberAnimation { duration: 200 }

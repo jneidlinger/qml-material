@@ -120,14 +120,14 @@ Controls.ApplicationWindow {
         id: overlayLayer
     }
 
-    width: units.dp(800)
-    height: units.dp(600)
+    width: Units.dp(800)
+    height: Units.dp(600)
 
     Component.onCompleted: {
         if (clientSideDecorations)
             flags |= Qt.FramelessWindowHint
 
-        units.pixelDensity = Qt.binding( function() {
+        Units.pixelDensity = Qt.binding( function() {
             switch(Qt.platform.os) {
               case "windows":
               case "osx":
@@ -143,13 +143,13 @@ Controls.ApplicationWindow {
                     Math.pow((Screen.height/Screen.pixelDensity), 2)) * 0.039370;
             
             if (diagonal >= 3.5 && diagonal < 5) { //iPhone 1st generation to phablet
-                units.multiplier = 1;
+                Units.multiplier = 1;
                 return Device.phone;
             } else if (diagonal >= 5 && diagonal < 6.5) {
-                units.multiplier = 1;
+                Units.multiplier = 1;
                 return Device.phablet;
             } else if (diagonal >= 6.5 && diagonal < 10.1) {
-                units.multiplier = 1;
+                Units.multiplier = 1;
                 return Device.tablet;
             } else if (diagonal >= 10.1 && diagonal < 29) {
                 return Device.desktop;
@@ -159,5 +159,12 @@ Controls.ApplicationWindow {
                 return Device.unknown;
             }
         });
+
+        // Nasty hack because singletons cannot import the module they were declared in, so
+        // the grid unit cannot be defined in either Device or Units, because it requires both.
+        Units.gridUnit = Qt.binding(function() {
+            return Device.type === Device.phone || Device.type === Device.phablet
+                    ? Units.dp(48) : Device.type == Device.tablet ? Units.dp(56) : Units.dp(64)
+        })
     }
 }

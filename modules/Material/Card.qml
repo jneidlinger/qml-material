@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -18,14 +18,21 @@
 import QtQuick 2.0
 import Material 0.1
 
+/*!
+   \qmltype Card
+   \inqmlmodule Material 0.1
+
+   \brief A card is a piece of paper with unique related data that serves as an entry point 
+   to more detailed information.
+ */
 View {
-    width: units.dp(300)
-    height: units.dp(250)
+    width: Units.dp(300)
+    height: Units.dp(250)
     elevation: flat ? 0 : 1
 
     property bool flat: false
 
     border.color: flat ? Qt.rgba(0,0,0,0.2) : "transparent"
-    radius: fullWidth || fullHeight ? 0 : units.dp(2)
+    radius: fullWidth || fullHeight ? 0 : Units.dp(2)
 
 }

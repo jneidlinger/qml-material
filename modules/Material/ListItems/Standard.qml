@@ -1,11 +1,11 @@
 /*
- * QML Air - A lightweight and mostly flat UI widget collection for QML
- * Copyright (C) 2014 Michael Spencer
+ * QML Material - An application framework implementing Material Design.
+ * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 2.1 of the
+ * License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,11 +20,17 @@ import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.1
 import Material 0.1
 
+/*!
+   \qmltype Standard
+   \inqmlmodule Material.ListItems 0.1
+
+   \brief A simple list item with a single line of text and optional primary and secondary actions.
+ */
 BaseListItem {
     id: listItem
 
-    implicitHeight: units.dp(48)
-    height: units.dp(48)
+    implicitHeight: Units.dp(48)
+    height: Units.dp(48)
 
     property alias text: label.text
     property alias valueText: valueLabel.text
@@ -71,12 +77,12 @@ BaseListItem {
         anchors.leftMargin: listItem.margins
         anchors.rightMargin: listItem.margins
 
-        spacing: units.dp(16)
+        spacing: Units.dp(16)
 
         Item {
             id: actionItem
 
-            Layout.preferredWidth: units.dp(40)
+            Layout.preferredWidth: Units.dp(40)
             Layout.preferredHeight: width
             Layout.alignment: Qt.AlignCenter
 
@@ -92,7 +98,7 @@ BaseListItem {
 
                 visible: valid
                 color: listItem.selected ? Theme.primaryColor : Theme.light.iconColor
-                size: units.dp(24)
+                size: Units.dp(24)
             }
         }
 

@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -15,22 +15,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import QtQuick 2.2
+import QtQuick 2.0
+import Material 0.1
 
 /*!
-   \qmltype TabView
-   \inqmlmodule Material 0.1
+   \qmltype Divider
+   \inqmlmodule Material.ListItems 0.1
 
-   \brief A container for displaying tabs in a page.
+   \brief A divider divides content in a list.
  */
-ListView {
-    id: tabView
+Item {
+	id: divider
 
-    orientation: Qt.Horizontal
+	anchors {
+		left: parent.left
+		right: parent.right
+	}
 
-    highlightMoveDuration: 400
-    clip: true
+	height: Units.dp(16)
 
-    snapMode: ListView.SnapOneItem
-    interactive: false
+	ThinDivider {
+        anchors.verticalCenter: parent.verticalCenter
+    }
 }

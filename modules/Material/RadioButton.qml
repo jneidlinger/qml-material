@@ -21,6 +21,12 @@ import QtQuick.Controls 1.2 as Controls
 import QtQuick.Controls.Styles.Material 0.1 as MaterialStyle
 import Material 0.1
 
+/*!
+   \qmltype RadioButton
+   \inqmlmodule Material 0.1
+
+   \brief Radio buttons allow the user to select one option from a set.
+*/
 Controls.RadioButton {
     id: radioButton
 
@@ -46,12 +52,12 @@ Controls.RadioButton {
         id: inkArea
         anchors {
             left: parent.left
-            leftMargin: units.dp(4)
+            leftMargin: Units.dp(4)
             verticalCenter: parent.verticalCenter
         }
 
-        width: units.dp(40)
-        height: units.dp(40)
+        width: Units.dp(40)
+        height: Units.dp(40)
         color: radioButton.checked ? Theme.alpha(radioButton.color, 0.20) : Qt.rgba(0,0,0,0.1)
 
         onClicked: {

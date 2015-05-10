@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -18,6 +18,12 @@
 import QtQuick 2.0
 import Material 0.1
 
+/*!
+   \qmltype Label
+   \inqmlmodule Material 0.1
+
+   \brief A text label with many different font styles from Material Design.
+ */
 Text {
     id: label
     property string style: "body1"
@@ -102,7 +108,7 @@ Text {
 
     property var fontInfo: fontStyles[style]
 
-    font.pixelSize: units.dp(!Device.isMobile && fontInfo.size_desktop 
+    font.pixelSize: Units.dp(!Device.isMobile && fontInfo.size_desktop 
             ? fontInfo.size_desktop : fontInfo.size)
     font.family: "Roboto"
     font.weight: {
