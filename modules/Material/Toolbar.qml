@@ -20,8 +20,21 @@ import QtQuick.Controls 1.2 as Controls
 import QtQuick.Layouts 1.1
 import Material 0.1
 
+
+/*!
+   \qmltype Toolbar
+   \inqmlmodule Material 0.1
+
+   \brief Provides the container used to hold the action bar of pages.
+*/
 View {
     id: toolbar
+
+    anchors {
+        top: parent.top
+        left: parent.left
+        right: parent.right
+    }
 
     property int actionBarHeight: {
         if (!page || page.actionBar.hidden)
@@ -38,8 +51,8 @@ View {
         return height
     }
     property int targetHeight: actionBarHeight + (tabs.length > 0 ? tabbar.height : 0)
-    property int maxActionCount: (Device.formFactor == "desktop"
-                                  ? 5 : Device.formFactor == "tablet" ? 4 : 3)
+    property int maxActionCount: Device.type === Device.desktop
+                                 ? 5 : Device.type === Device.tablet ? 4 : 3
     property bool clientSideDecorations: false
     property string color: "white"
     property var page
@@ -48,23 +61,15 @@ View {
     property bool showBackButton
     property var pages: []
 
-    anchors {
-        top: parent.top
-        left: parent.left
-        right: parent.right
-    }
-
     opacity: page && page.actionBar.hidden ? 0 : 1
 
-    backgroundColor: page && page.actionBar.backgroundColor
-        ? Qt.darker(page.actionBar.backgroundColor,1).a == 0
-            ? page.color : page.actionBar.backgroundColor
-        : Theme.primaryColor
-    implicitHeight: Device.type == Device.phone ? units.dp(48)
-                                                : Device.type == Device.tablet ? units.dp(56)
-                                                                               : units.dp(64)
+    backgroundColor: page ? page.actionBar.backgroundColor.a === 0
+                            ? page.backgroundColor : page.actionBar.backgroundColor
+                          : Theme.primaryColor
+
+    implicitHeight: Units.gu(1)
     height: targetHeight
-    elevation: backgroundColor == page.color ? 0 : page.actionBar.elevation
+    elevation: backgroundColor === page.color ? 0 : page.actionBar.elevation
     fullWidth: true
     clipContent: true
 
@@ -79,6 +84,21 @@ View {
     onSelectedTabChanged: {
         if (page)
             page.selectedTab = selectedTab
+    }
+
+    onPageChanged: {
+        toolbar.selectedTab = page.selectedTab
+    }
+
+    Connections {
+        target: page
+
+        // Ignore errors when the page is invalid or null
+        ignoreUnknownSignals: true
+
+        onSelectedTabChanged: {
+            toolbar.selectedTab = page.selectedTab
+        }
     }
 
     function pop() {
@@ -118,7 +138,7 @@ View {
         anchors.fill: rightSidebarStack
 
         color: page.rightSidebar && page.rightSidebar.actionBar.backgroundColor
-               ? Qt.darker(page.rightSidebar.actionBar.backgroundColor,1).a == 0
+               ? Qt.darker(page.rightSidebar.actionBar.backgroundColor,1).a === 0
                  ? page.rightSidebar.color
                  : page.rightSidebar.actionBar.backgroundColor
                : Theme.primaryColor
@@ -218,25 +238,26 @@ View {
         anchors {
             verticalCenter: stack.verticalCenter
             right: parent.right
-            rightMargin: units.dp(16)
+            rightMargin: Units.dp(16)
         }
 
-        spacing: units.dp(24)
+        spacing: Units.dp(24)
 
         IconButton {
-            name: "navigation/close"
+            iconName: "navigation/close"
             color: Theme.lightDark(toolbar.backgroundColor, Theme.light.textColor,
                 Theme.dark.textColor)
+            onClicked: Qt.quit()
         }
     }
 
     Tabs {
         id: tabbar
         color: toolbar.backgroundColor
-        highlight: Theme.accentColor
         visible: tabs.length > 0
 
         tabs: page ? page.tabs : []
+        darkBackground: Theme.isDarkColor(toolbar.backgroundColor)
 
         anchors {
             left: parent.left

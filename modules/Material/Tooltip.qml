@@ -22,7 +22,6 @@ import Material.Extras 0.1
 /*!
    \qmltype Tooltip
    \inqmlmodule Material 0.1
-   \ingroup material
 
    \brief A tooltip is a label that appears on hover and explains a non-text UI element.
 
@@ -44,8 +43,8 @@ PopupBase {
     overlayLayer: "tooltipOverlayLayer"
     globalMouseAreaEnabled: false
 
-    width: tooltipLabel.paintedWidth + (Device.isMobile ? units.dp(32) : units.dp(16))
-    height: Device.isMobile ? units.dp(44) : units.dp(22)
+    width: tooltipLabel.paintedWidth + (Device.isMobile ? Units.dp(32) : Units.dp(16))
+    height: Device.isMobile ? Units.dp(44) : Units.dp(22)
 
     visible: view.opacity > 0
 
@@ -66,7 +65,7 @@ PopupBase {
         dropdown.y = position.y + caller.height//    - dropdown.height
 
         if(dropdown.x + width > root.width)
-            offsetX = -(((dropdown.x + width) - root.width) + units.dp(8))
+            offsetX = -(((dropdown.x + width) - root.width) + Units.dp(8))
 
         dropdown.x += offsetX
         dropdown.y += offsetY
@@ -86,7 +85,7 @@ PopupBase {
         id: timer
 
         interval: 1000
-        onTriggered: open(mouseArea, 0, units.dp(4))
+        onTriggered: open(mouseArea, 0, Units.dp(4))
     }
 
     Connections {
@@ -99,7 +98,7 @@ PopupBase {
 
         onPressAndHold: {
             if(text !== "" && !showing)
-                open(mouseArea, 0, units.dp(4))
+                open(mouseArea, 0, Units.dp(4))
         }
 
         onEntered: {
@@ -119,7 +118,7 @@ PopupBase {
         id: view
 
         elevation: 2
-        radius: units.dp(2)
+        radius: Units.dp(2)
         anchors {
             left: parent.left
             right: parent.right

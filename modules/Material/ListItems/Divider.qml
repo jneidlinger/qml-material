@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Bogdan Cuza <bogdan.cuza@hotmail.com>
+ * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -16,16 +16,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
-import ".."
+import Material 0.1
 
-ExpandTransition {
-    id: trans
+/*!
+   \qmltype Divider
+   \inqmlmodule Material.ListItems 0.1
 
-    Card {
-        id: card
-        anchors.fill: parent
+   \brief A divider divides content in a list.
+ */
+Item {
+	id: divider
 
-        fullHeight: false
-        fullWidth: false
+	anchors {
+		left: parent.left
+		right: parent.right
+	}
+
+	height: Units.dp(16)
+
+	ThinDivider {
+        anchors.verticalCenter: parent.verticalCenter
     }
 }

@@ -5,7 +5,7 @@ Item {
 
     Column {
         anchors.centerIn: parent
-        spacing: units.dp(20)
+        spacing: Units.dp(20)
 
         Button {
             text: "Simple Button"
@@ -27,25 +27,10 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        Rectangle {
-            color: "black"
-            width: darkBackgroundButton.implicitWidth + units.dp(24)
-            height: darkBackgroundButton.implicitHeight + units.dp(24)
-            anchors.horizontalCenter: parent.horizontalCenter
-            Button {
-                id: darkBackgroundButton
-                anchors.centerIn: parent
-                text: "Disabled Raised Button"
-                elevation: 1
-                enabled: false
-                darkBackground: true
-            }
-        }
-
         Button {
             text: "Wide Button"
 
-            width: units.dp(200)
+            width: Units.dp(200)
             elevation: 1
             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -85,7 +70,7 @@ Item {
         anchors {
             right: parent.right
             bottom: parent.bottom
-            margins: units.dp(32)
+            margins: Units.dp(32)
         }
 
         iconName: "content/add"

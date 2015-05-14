@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014-2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -19,13 +19,24 @@ import QtQuick 2.0
 import Material 0.1
 import 'awesome.js' as Awesome
 
+/*!
+   \qmltype AwesomeIcon
+   \inqmlmodule Material 0.1
+
+   \brief Displays an icon from the FontAwesome icon collection.
+
+   Most of the time, this is used indirectly by the \l Icon component, which
+   is used by action bars, list items, and many other common Material components.
+ */
 Item {
     id: widget
+
     property string name
     property bool rotate: widget.name.match(/.*-rotate/) !== null
+    property bool valid: text.implicitWidth > 0
 
     property alias color: text.color
-    property int size: units.dp(24)
+    property int size: Units.dp(24)
 
     width: text.width
     height: text.height

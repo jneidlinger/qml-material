@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
  *               2015 Jordan Neidlinger <jneidlinger@barracuda.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,20 +20,29 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.1
 import ".."
 
+/*!
+   \qmltype Subtitled
+   \inqmlmodule Material.ListItems 0.1
+
+   \brief A list item with a two or three lines of text and optional primary and secondary actions.
+ */
 BaseListItem {
     id: listItem
 
-    height: maximumLineCount == 2 ? units.dp(72) : units.dp(88)
+    height: maximumLineCount == 2 ? Units.dp(72) : Units.dp(88)
 
     property alias text: label.text
     property alias subText: subLabel.text
     property alias valueText: valueLabel.text
 
+    property alias iconName: icon.name
+    property alias iconSource: icon.source
+
     property alias action: actionItem.children
     property alias secondaryItem: secondaryItem.children
     property alias content: contentItem.children
 
-    interactive: contentItem.children.length == 0
+    interactive: contentItem.children.length === 0
 
     property alias label: label
     property alias subLabel: subLabel
@@ -51,17 +60,30 @@ BaseListItem {
 
         columns: 4
         rows: 1
-        columnSpacing: units.dp(16)
+        columnSpacing: Units.dp(16)
 
         Item {
             id: actionItem
 
-            Layout.preferredWidth: children.length === 0 ? 0 : units.dp(40)
+            Layout.preferredWidth: Units.dp(40)
             Layout.preferredHeight: width
             Layout.alignment: Qt.AlignCenter
             Layout.column: 1
 
-            visible: children.length > 0
+            visible: children.length > 1 || icon.valid
+
+            Icon {
+                id: icon
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                }
+
+                visible: valid
+                color: listItem.selected ? Theme.primaryColor : Theme.light.iconColor
+                size: Units.dp(24)
+            }
         }
 
         ColumnLayout {
@@ -69,12 +91,12 @@ BaseListItem {
             Layout.fillWidth: true
             Layout.column: 2
 
-            spacing: units.dp(3)
+            spacing: Units.dp(3)
 
             RowLayout {
                 Layout.fillWidth: true
 
-                spacing: units.dp(8)
+                spacing: Units.dp(8)
 
                 Label {
                     id: label

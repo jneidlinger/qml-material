@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -17,6 +17,12 @@
  */
 import QtQuick 2.2
 
+/*!
+   \qmltype TabView
+   \inqmlmodule Material 0.1
+
+   \brief A container for displaying tabs in a page.
+ */
 ListView {
     id: tabView
 

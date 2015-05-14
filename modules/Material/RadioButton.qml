@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Jordan Neidlinger
+ * Copyright (C) 2014-2015 Jordan Neidlinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -18,9 +18,15 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.2 as Controls
-import QtQuick.Controls.Styles 1.2 as ControlStyles
+import QtQuick.Controls.Styles.Material 0.1 as MaterialStyle
 import Material 0.1
 
+/*!
+   \qmltype RadioButton
+   \inqmlmodule Material 0.1
+
+   \brief Radio buttons allow the user to select one option from a set.
+*/
 Controls.RadioButton {
     id: radioButton
 
@@ -38,87 +44,29 @@ Controls.RadioButton {
     /*!
        Set to \c true if the radio button can be toggled from checked to unchecked
      */
-    property bool toggles
+    property bool canToggle
 
-    style: ControlStyles.RadioButtonStyle {
-        label :Label {
-            text: control.text
-            style: "button"
-            color: control.enabled ? radioButton.darkBackground ? Theme.dark.textColor
-                                                                : Theme.light.textColor
-                                   : radioButton.darkBackground ? Theme.alpha("#fff", 0.30)
-                                                                : Theme.alpha("#000", 0.26)
-        }
-
-        background: Rectangle {
-            color: "transparent"
-        }
-
-        indicator: Rectangle {
-            implicitWidth: units.dp(48)
-            implicitHeight: units.dp(48)
-            radius: implicitHeight / 2
-            color: control.activeFocus ? Theme.alpha(radioButton.color, 0.20) : "transparent"
-
-            Rectangle {
-                anchors.centerIn: parent
-                implicitWidth: units.dp(20)
-                implicitHeight: units.dp(20)
-                radius: implicitHeight / 2
-                color: "transparent"
-                border.color: control.enabled
-                    ? control.checked ? radioButton.color
-                                      : radioButton.darkBackground ? Theme.alpha("#fff", 0.70)
-                                                                   : Theme.alpha("#000", 0.54)
-                    : radioButton.darkBackground ? Theme.alpha("#fff", 0.30)
-                                                 : Theme.alpha("#000", 0.26)
-                border.width: units.dp(2)
-                antialiasing: true
-
-                Behavior on border.color {
-                    ColorAnimation { duration: 200}
-                }
-
-                Rectangle {
-                    anchors.centerIn: parent
-                    implicitWidth: control.checked ? units.dp(10) : 0
-                    implicitHeight: control.checked ? units.dp(10) : 0
-                    color: control.enabled ? radioButton.color
-                                           : radioButton.darkBackground ? Theme.alpha("#fff", 0.30)
-                                                                        : Theme.alpha("#000", 0.26)
-                    radius: implicitHeight / 2
-                    antialiasing: true
-
-                    Behavior on implicitWidth {
-                        NumberAnimation { duration: 200 }
-                    }
-
-                    Behavior on implicitHeight {
-                        NumberAnimation { duration: 200 }
-                    }
-                }
-            }
-        }
-
-        spacing: 0
-    }
+    style: MaterialStyle.RadioButtonStyle {}
 
     Ink {
+        id: inkArea
         anchors {
             left: parent.left
-            leftMargin: units.dp(4)
+            leftMargin: Units.dp(4)
             verticalCenter: parent.verticalCenter
         }
 
-        width: units.dp(40)
-        height: units.dp(40)
+        width: Units.dp(40)
+        height: Units.dp(40)
         color: radioButton.checked ? Theme.alpha(radioButton.color, 0.20) : Qt.rgba(0,0,0,0.1)
-        circular: true
-        centered: true
+
         onClicked: {
-            if(radioButton.toggles || !radioButton.checked)
+            if(radioButton.canToggle || !radioButton.checked)
                 radioButton.checked = !radioButton.checked
         }
+
+        circular: true
+        centered: true
     }
 
     MouseArea {
@@ -129,7 +77,7 @@ Controls.RadioButton {
             bottom: parent.bottom
         }
         onClicked: {
-            if(radioButton.toggles || !radioButton.checked)
+            if(radioButton.canToggle || !radioButton.checked)
                 radioButton.checked = !radioButton.checked
         }
     }

@@ -1,8 +1,8 @@
 /*
  * QML Material - An application framework implementing Material Design.
  * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
- * Copyright (C) 2015 Bogdan Cuza <bogdan.cuza@hotmail.com>
- * Copyright (C) 2015 Mikhail Ivchenko <ematirov@gmail.com>
+ *               2015 Bogdan Cuza <bogdan.cuza@hotmail.com>
+ *               2015 Mikhail Ivchenko <ematirov@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -23,6 +23,13 @@ import QtQuick.Layouts 1.1
 import Material 0.1
 import Material.Extras 0.1
 
+/*!
+   \qmltype Dialog
+   \inqmlmodule Material 0.1
+
+   \brief Dialogs inform users about critical information, require users to make 
+   decisions, or encapsulate multiple tasks within a discrete process
+ */
 PopupBase {
     id: dialog
 
@@ -33,25 +40,41 @@ PopupBase {
     visible: opacity > 0
 
     width: Math.max(minimumWidth,
-                    content.contentWidth + units.dp(32))
+                    content.contentWidth + 2 * contentMargins)
 
-    height: Math.min(units.dp(350),
-                     headerView.height + units.dp(32) +
+    height: Math.min(Units.dp(350),
+                     headerView.height + Units.dp(32) +
                      content.contentHeight +
                      content.topMargin +
                      content.bottomMargin +
                      buttonContainer.height)
 
-    property int minimumWidth: units.dp(270)
+    property int contentMargins: Units.dp(16)
+
+    property int minimumWidth: Units.dp(270)
 
     property alias title: titleLabel.text
     property alias text: textLabel.text
 
+    /*!
+       \qmlproperty Button negativeButton
+
+       The negative button, displayed as the leftmost button on the right of the dialog buttons.
+       This is usually used to dismiss the dialog.
+     */
     property alias negativeButton: negativeButton
+
+    /*!
+       \qmlproperty Button primaryButton
+
+       The primary button, displayed as the rightmost button in the dialog buttons row. This is
+       usually used to accept the dialog's action.
+     */
     property alias positiveButton: positiveButton
 
     property string negativeButtonText: "Cancel"
     property string positiveButtonText: "Ok"
+    property alias positiveButtonEnabled: positiveButton.enabled
 
     property bool hasActions: true
 
@@ -73,7 +96,26 @@ PopupBase {
         NumberAnimation { duration: 200 }
     }
 
-    Keys.onEscapePressed: dialog.close()
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Escape) {
+            closeKeyPressed(event)
+        }
+    }
+
+    Keys.onReleased: {
+        if (event.key === Qt.Key_Back) {
+            closeKeyPressed(event)
+        }
+    }
+
+    function closeKeyPressed(event) {
+        if (dialog.showing) {
+            if (dialog.dismissOnTap) {
+                dialog.close()
+            }
+            event.accepted = true
+        }
+    }
 
     function show() {
         open()
@@ -84,7 +126,7 @@ PopupBase {
 
         anchors.fill: parent
         elevation: 5
-        radius: units.dp(2)
+        radius: Units.dp(2)
 
         MouseArea {
             anchors.fill: parent
@@ -100,11 +142,11 @@ PopupBase {
                 left: parent.left
                 right: parent.right
                 top: parent.top
-                topMargin: units.dp(8)
+                topMargin: Units.dp(8)
             }
 
             clip: true
-            height: headerView.height + units.dp(32)
+            height: headerView.height + Units.dp(32)
 
             View {
                 backgroundColor: "white"
@@ -117,7 +159,7 @@ PopupBase {
                     top: parent.top
                 }
 
-                height: headerView.height + units.dp(16)
+                height: headerView.height + Units.dp(16)
             }
         }
 
@@ -125,16 +167,16 @@ PopupBase {
         Column {
             id: headerView
 
-            spacing: units.dp(16)
+            spacing: Units.dp(16)
 
             anchors {
                 left: parent.left
                 right: parent.right
                 top: parent.top
 
-                leftMargin: units.dp(16)
-                rightMargin: units.dp(16)
-                topMargin: units.dp(16)
+                leftMargin: Units.dp(16)
+                rightMargin: Units.dp(16)
+                topMargin: Units.dp(16)
             }
 
             Label {
@@ -156,6 +198,10 @@ PopupBase {
             }
         }
 
+        Rectangle {
+            anchors.fill: content
+        }
+
         Flickable {
             id: content
 
@@ -167,23 +213,25 @@ PopupBase {
                 left: parent.left
                 right: parent.right
                 top: headerView.bottom
-                topMargin: units.dp(8)
-                bottomMargin: units.dp(-8)
+                topMargin: Units.dp(8)
+                bottomMargin: Units.dp(-8)
                 bottom: buttonContainer.top
             }
 
-            interactive: contentHeight + units.dp(8) > height
-            bottomMargin: hasActions ? 0 : units.dp(8)
+            interactive: contentHeight + Units.dp(8) > height
+            bottomMargin: hasActions ? 0 : Units.dp(8)
 
-            Column {
-                id: column
-                anchors {
-                    left: parent.left
-                    margins: units.dp(16)
+            Rectangle {
+                Column {
+                    id: column
+                    anchors {
+                        left: parent.left
+                        margins: contentMargins
+                    }
+
+                    width: content.width - 2 * contentMargins
+                    spacing: Units.dp(16)
                 }
-
-                width: content.width - units.dp(32)
-                spacing: units.dp(16)
             }
         }
 
@@ -195,19 +243,19 @@ PopupBase {
             id: buttonContainer
 
             anchors {
-                bottomMargin: units.dp(8)
+                bottomMargin: Units.dp(8)
                 bottom: parent.bottom
                 right: parent.right
                 left: parent.left
             }
 
-            height: hasActions ? buttonView.height + units.dp(8) : 0
+            height: hasActions ? buttonView.height + Units.dp(8) : 0
             clip: true
 
             View {
                 id: buttonView
 
-                height: hasActions ? positiveButton.implicitHeight + units.dp(8) : 0
+                height: hasActions ? positiveButton.implicitHeight + Units.dp(8) : 0
                 visible: hasActions
 
                 backgroundColor: "white"
@@ -231,8 +279,8 @@ PopupBase {
                     anchors {
                         top: parent.top
                         right: positiveButton.left
-                        topMargin: units.dp(8)
-                        rightMargin: units.dp(8)
+                        topMargin: Units.dp(8)
+                        rightMargin: Units.dp(8)
                     }
 
                     onClicked: {
@@ -250,8 +298,8 @@ PopupBase {
 
                     anchors {
                         top: parent.top
-                        topMargin: units.dp(8)
-                        rightMargin: units.dp(16)
+                        topMargin: Units.dp(8)
+                        rightMargin: Units.dp(16)
                         right: parent.right
                     }
 

@@ -1,6 +1,6 @@
 /*
  * QML Material - An application framework implementing Material Design.
- * Copyright (C) 2014 Michael Spencer
+ * Copyright (C) 2014-2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -19,11 +19,19 @@ import QtQuick 2.0
 import Material 0.1
 import Material.Extras 0.1
 
+/*!
+   \qmltype IconButton
+   \inqmlmodule Material 0.1
+
+   \brief Icon buttons are appropriate for app bars, toolbars, action buttons or toggles.
+ */
 Item {
     id: iconButton
 
     property Action action
-    property string name: action ? action.iconName : ""
+    property string iconName
+    property string iconSource: action ? action.iconSource : "icon://" + iconName
+    property bool hoverAnimation: action ? action.hoverAnimation : false
     property alias color: icon.color
     property alias size: icon.size
 
@@ -46,8 +54,8 @@ Item {
         centered: true
         circular: true
 
-        width: parent.width + units.dp(20)
-        height: parent.height + units.dp(20)
+        width: parent.width + Units.dp(20)
+        height: parent.height + Units.dp(20)
 
         z: 0
 
@@ -59,7 +67,13 @@ Item {
     Icon {
         id: icon
 
-        name: iconButton.name
+        source: iconButton.iconSource
+        rotation: iconButton.hoverAnimation ? ink.containsMouse ? 90 : 0
+                                            : 0
+
+        Behavior on rotation {
+            NumberAnimation { duration: 200 }
+        }
     }
 
     Tooltip {

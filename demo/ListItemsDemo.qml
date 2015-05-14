@@ -7,7 +7,7 @@ Item {
     View {
         anchors {
             fill: parent
-            margins: units.dp(32)
+            margins: Units.dp(32)
         }
 
         elevation: 1
@@ -15,8 +15,8 @@ Item {
         Column {
             anchors.fill: parent
 
-            ListItem.Header {
-                text: "Section header"
+            ListItem.Subheader {
+                text: "Section Subheader"
             }
 
             ListItem.Standard {
@@ -49,13 +49,13 @@ Item {
                 action: Icon {
                     anchors.centerIn: parent
                     name: "device/access_alarm"
-                    size: units.dp(32)
+                    size: Units.dp(32)
                 }
             }
 
             ListItem.SimpleMenu {
                 text: "Subtitled list item"
-                model: ["A", "B", "C"]
+                model: ["A", "B and some long text that should not clip", "C"]
             }
         }
     }
