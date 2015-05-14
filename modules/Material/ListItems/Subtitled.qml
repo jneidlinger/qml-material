@@ -48,7 +48,7 @@ BaseListItem {
     property alias subLabel: subLabel
     property alias valueLabel: valueLabel
 
-    dividerInset: actionItem.children.length === 0 ? 0 : listItem.height
+    dividerInset: actionItem.visible ? listItem.height : 0
 
     property int maximumLineCount: 2
 
