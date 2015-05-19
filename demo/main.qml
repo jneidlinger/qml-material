@@ -163,6 +163,7 @@ ApplicationWindow {
                     }
                     clip: true
                     contentHeight: Math.max(example.implicitHeight + 40, height)
+                    contentWidth: Math.max(example.implicitWidth, width)
                     Loader {
                         id: example
                         anchors.fill: parent
