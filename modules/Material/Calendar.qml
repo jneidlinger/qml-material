@@ -40,8 +40,8 @@ Controls.Calendar {
     style: CalendarStyle {
         gridVisible: false
 
-        property int calendarWidth: isLandscape ? Units.dp(460) : Units.dp(270)
-        property int calendarHeight: isLandscape ? Units.dp(240) : Units.dp(460)
+		property int calendarWidth: isLandscape ? Units.dp(510) : Units.dp(340)
+		property int calendarHeight: isLandscape ? Units.dp(260) : Units.dp(440)
 
         background: Rectangle {
             color: "white"
@@ -50,60 +50,38 @@ Controls.Calendar {
         }
 
         navigationBar: Rectangle {
-            height: isLandscape ? calendarHeight : Units.dp(180)
-            width: isLandscape ? calendarWidth / 2 : undefined
-            color: Theme.dark.accentColor
+			height: isLandscape ? calendarHeight : Units.dp(96)
+			width: isLandscape ? calendarWidth / 3 : undefined
+			color: Theme.accentColor
 
-            Rectangle {
-                id: topOfHeader
-                color: Qt.rgba(0, 0, 0, 0.2)
-                height: Units.dp(36)
-                width: parent.width
+			ColumnLayout {
+				anchors.verticalCenter: isLandscape ? undefined : parent.verticalCenter
+				anchors.left: parent.left
+				anchors.leftMargin: isLandscape ? Units.dp(16) : Units.dp(24)
+				anchors.top: isLandscape ? parent.top : undefined
+				anchors.topMargin: isLandscape ? Units.dp(16) : undefined
+				anchors.right: parent.right
+				anchors.rightMargin: Units.dp(36)
+				spacing: 0
 
-                Label {
-                    text: control.selectedDate.toLocaleString(control.__locale, "dddd")
-                    anchors.centerIn: parent
-                    font.weight: Font.Normal
-                    font.pixelSize: Units.dp(16)
-                    color: Theme.dark.textColor
-                }
-            }
+				Label {
+					font.weight: Font.DemiBold
+					style: "body2"
+					color: Qt.rgba(1, 1, 1, 0.7)
+					text: control.selectedDate.toLocaleString(control.__locale, "yyyy")
+				}
 
-            Rectangle {
-                anchors.top: topOfHeader.bottom
-                anchors.bottom: parent.bottom
-                width: parent.width
-                color: "transparent"
-
-                Label {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: parent.top
-                    anchors.topMargin: control.isLandscape ? Units.dp(16) : Units.dp(8)
-                    font.weight: Font.Normal
-                    font.pixelSize: Units.dp(26)
-                    color: Theme.dark.textColor
-                    text: control.selectedDate.toLocaleString(control.__locale, "MMM").toUpperCase()
-                }
-
-                Label {
-                    id: dayTitle
-                    anchors.centerIn: parent
-                    font.weight: Font.DemiBold
-                    font.pixelSize: control.isLandscape ? Units.dp(72) : Units.dp(60)
-                    color: Theme.dark.textColor
-                    text: control.selectedDate.toLocaleString(control.__locale, "d")
-                }
-
-                Label {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: control.isLandscape ? Units.dp(16) : Units.dp(8)
-                    font.weight: Font.Normal
-                    font.pixelSize: Units.dp(26)
-                    color: Qt.rgba(1, 1, 1, 0.7)
-                    text: control.selectedDate.toLocaleString(control.__locale, "yyyy")
-                }
-            }
+				Label {
+					id: dayTitle
+					font.weight: Font.DemiBold
+					font.pixelSize: Units.dp(36)
+					Layout.fillWidth: true
+					lineHeight: 0.9
+					wrapMode: Text.Wrap
+					color: Theme.dark.textColor
+					text: control.selectedDate.toLocaleString(control.__locale, "ddd, MMM dd")
+				}
+			}
         }
 
         dayOfWeekDelegate: Rectangle {
@@ -133,7 +111,7 @@ Controls.Calendar {
                 anchors.centerIn: parent
                 color: styleData.selected
                        ? "white" : styleData.today
-                         ? Theme.accentColor : Theme.light.textColor
+						 ? Theme.accentColor : "black"
             }
         }
 
@@ -198,16 +176,16 @@ Controls.Calendar {
                     anchors.left: control.isLandscape ? navigationBarLoader.right : parent.left
                     anchors.right: parent.right
                     width: control.isLandscape ? parent.width / 2 : undefined
-                    height: Units.dp(64)
+					height: control.isLandscape ? Units.dp(72) : Units.dp(80)
                     color: "transparent"
 
                     IconButton {
                         iconName: "navigation/chevron_left"
                         id: previousMonth
                         anchors.top: parent.top
-                        anchors.topMargin: Units.dp(9)
+						anchors.topMargin: control.isLandscape ? Units.dp(12) : Units.dp(16)
                         anchors.left: parent.left
-                        anchors.leftMargin: Units.dp(9)
+						anchors.leftMargin: Units.dp(16)
                         onClicked: control.showPreviousMonth()
                     }
 
@@ -215,9 +193,9 @@ Controls.Calendar {
                         iconName: "navigation/chevron_right"
                         id: nextMonth
                         anchors.top: parent.top
-                        anchors.topMargin: Units.dp(9)
+						anchors.topMargin: control.isLandscape ? Units.dp(12) : Units.dp(16)
                         anchors.right: parent.right
-                        anchors.rightMargin: Units.dp(9)
+						anchors.rightMargin: Units.dp(16)
                         onClicked: control.showNextMonth()
                     }
 
@@ -235,9 +213,9 @@ Controls.Calendar {
                         id: calenderHeader
                         anchors.bottom: parent.bottom
                         anchors.left: parent.left
-                        anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0) + Units.dp(16)
+						anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0) + Units.dp(8)
                         anchors.right: parent.right
-                        anchors.rightMargin: Units.dp(16)
+						anchors.rightMargin: Units.dp(8)
 
                         spacing: gridVisible ? __gridLineWidth : 0
 
@@ -265,7 +243,7 @@ Controls.Calendar {
                 Rectangle {
                     id: topGridLine
                     color: __horizontalSeparatorColor
-                    width: control.isLandscape ? parent.width / 2 : parent.width
+					width: control.isLandscape ? parent.width * (2/3) : parent.width
                     height: __gridLineWidth
                     visible: gridVisible
                     anchors.top: dayOfWeekHeaderRow.bottom
@@ -274,11 +252,11 @@ Controls.Calendar {
 
                 Row {
                     id: gridRow
-                    width: weekNumbersItem.width + (control.isLandscape ? (viewContainer.width / 2) : viewContainer.width) - Units.dp(32)
+					width: weekNumbersItem.width + (control.isLandscape ? (viewContainer.width * (2/3)) : viewContainer.width) - Units.dp(16)
                     height: viewContainer.height
                     anchors.top: topGridLine.bottom
                     anchors.left: control.isLandscape ? topGridLine.left : parent.left
-                    anchors.leftMargin: Units.dp(16)
+					anchors.leftMargin: Units.dp(8)
 
                     Column {
                         id: weekNumbersItem
@@ -330,7 +308,7 @@ Controls.Calendar {
                     // Contains the grid lines and the grid itself.
                     Item {
                         id: viewContainer
-                        width: (control.isLandscape ? container.width / 2 : container.width) - (control.weekNumbersVisible ? weekNumbersItem.width + separator.width : 0) - Units.dp(32)
+						width: (control.isLandscape ? container.width * (2/3) : container.width) - (control.weekNumbersVisible ? weekNumbersItem.width + separator.width : 0) - Units.dp(16)
                         height: container.height - (control.isLandscape ? 0 : navigationBarLoader.height) - dayOfWeekHeaderRow.height - topGridLine.height
 
                         Repeater {
