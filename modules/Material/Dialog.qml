@@ -26,8 +26,7 @@ import Material.Extras 0.1
 /*!
    \qmltype Dialog
    \inqmlmodule Material 0.1
-
-   \brief Dialogs inform users about critical information, require users to make 
+   \brief Dialogs inform users about critical information, require users to make
    decisions, or encapsulate multiple tasks within a discrete process
  */
 PopupBase {
@@ -58,7 +57,6 @@ PopupBase {
 
     /*!
        \qmlproperty Button negativeButton
-
        The negative button, displayed as the leftmost button on the right of the dialog buttons.
        This is usually used to dismiss the dialog.
      */
@@ -66,7 +64,6 @@ PopupBase {
 
     /*!
        \qmlproperty Button primaryButton
-
        The primary button, displayed as the rightmost button in the dialog buttons row. This is
        usually used to accept the dialog's action.
      */
@@ -312,5 +309,4 @@ PopupBase {
             }
         }
     }
-
 }
