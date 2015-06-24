@@ -17,7 +17,7 @@ Item {
         spacing: Units.dp(20)
 
         Button {
-            text: "Show Action Dialog"
+            text: "Show Time Picker Dialog"
             anchors.horizontalCenter: parent.horizontalCenter
             elevation: 1
             onClicked: {
@@ -53,6 +53,6 @@ Item {
     }
 
     function updateLabelForDate(date) {
-		timeLabel.text = date.toLocaleTimeString(Qt.locale(), "hh:mm ap")
+        timeLabel.text = date.toLocaleTimeString(Qt.locale(), "hh:mm ap")
     }
 }
