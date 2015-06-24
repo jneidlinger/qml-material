@@ -24,73 +24,83 @@ import QtQuick.Controls 1.2 as QuickControls
 import QtQuick.Controls.Styles 1.2
 
 FocusScope {
-	id: timePicker
+    id: timePicker
 
-	width: parent.width
-	height: content.height
+    width: Units.dp(300)
+    height: content.height
 
-	/*!
-	   Set to \c true if selection is 24 hour based. Defaults to false
-	 */
+    /*!
+       Set to \c true if selection is 24 hour based. Defaults to false
+     */
     property bool prefer24Hour: false
 
-	/*!
-	   The visual padding around the clock element
-	 */
+    /*!
+       The visual padding around the clock element
+     */
     property real clockPadding: Units.dp(24)
 
-	/*!
-	   Set to \c true if the time picker should first show the hours. Defaults to true
-	 */
+    /*!
+       Set to \c true if the time picker should first show the hours. Defaults to true
+     */
     property bool isHours: true
 
-	/*!
-	   Sets the bottom margin for the time picker
-	 */
-	property int bottomMargin: 0
+    /*!
+       Sets the bottom margin for the time picker
+     */
+    property int bottomMargin: 0
 
-	Keys.onUpPressed: {
-		var date = internal.timePicked
+    Keys.onUpPressed: {
+        var date = internal.timePicked
 
-		if(isHours)
-			date.setHours(internal.timePicked.getHours() + 1)
-		else
-			date.setMinutes(internal.timePicked.getMinutes() + 1)
+        if(isHours)
+            date.setHours(internal.timePicked.getHours() + 1)
+        else
+            date.setMinutes(internal.timePicked.getMinutes() + 1)
 
-		internal.timePicked = date
-	}
+        internal.timePicked = date
+    }
 
-	Keys.onDownPressed: {
-		var date = internal.timePicked
+    Keys.onDownPressed: {
+        var date = internal.timePicked
 
-		if(isHours)
-			date.setHours(internal.timePicked.getHours() - 1)
-		else
-			date.setMinutes(internal.timePicked.getMinutes() - 1)
+        if(isHours)
+            date.setHours(internal.timePicked.getHours() - 1)
+        else
+            date.setMinutes(internal.timePicked.getMinutes() - 1)
 
-		internal.timePicked = date
-	}
+        internal.timePicked = date
+    }
 
-	property string __digitsPressed
+    Keys.onLeftPressed: {
+        if(!isHours)
+            setIsHours(true)
+    }
 
-	Keys.onDigit0Pressed: setDigitsPressed(0)
-	Keys.onDigit1Pressed: setDigitsPressed(1)
-	Keys.onDigit2Pressed: setDigitsPressed(2)
-	Keys.onDigit3Pressed: setDigitsPressed(3)
-	Keys.onDigit4Pressed: setDigitsPressed(4)
-	Keys.onDigit5Pressed: setDigitsPressed(5)
-	Keys.onDigit6Pressed: setDigitsPressed(6)
-	Keys.onDigit7Pressed: setDigitsPressed(7)
-	Keys.onDigit8Pressed: setDigitsPressed(8)
-	Keys.onDigit9Pressed: setDigitsPressed(9)
+    Keys.onRightPressed: {
+        if(isHours)
+            setIsHours(false)
+    }
+
+    property string __digitsPressed
+
+    Keys.onDigit0Pressed: setDigitsPressed(0)
+    Keys.onDigit1Pressed: setDigitsPressed(1)
+    Keys.onDigit2Pressed: setDigitsPressed(2)
+    Keys.onDigit3Pressed: setDigitsPressed(3)
+    Keys.onDigit4Pressed: setDigitsPressed(4)
+    Keys.onDigit5Pressed: setDigitsPressed(5)
+    Keys.onDigit6Pressed: setDigitsPressed(6)
+    Keys.onDigit7Pressed: setDigitsPressed(7)
+    Keys.onDigit8Pressed: setDigitsPressed(8)
+    Keys.onDigit9Pressed: setDigitsPressed(9)
 
     QtObject {
         id: internal
         property bool resetFlag: false
-		property date timePicked
+        property date timePicked
         property bool completed: false
 
-		onTimePickedChanged: {
+        onTimePickedChanged: {
             if(completed) {
                 var hours = timePicked.getHours()
                 if(hours > 11 && !prefer24Hour){
@@ -103,15 +113,15 @@ FocusScope {
                 hoursPathView.currentIndex = hours
 
                 var minutes = internal.timePicked.getMinutes()
-				minutesPathView.currentIndex = minutes
+                minutesPathView.currentIndex = minutes
             }
         }
     }
 
     Component.onCompleted: {
-		internal.completed = true
-		internal.timePicked = new Date(Date.now())
-				forceActiveFocus()
+        internal.completed = true
+        internal.timePicked = new Date(Date.now())
+                forceActiveFocus()
     }
 
     Column {
@@ -122,8 +132,8 @@ FocusScope {
         Rectangle {
             id: headerView
             width: parent.width
-            height: Units.dp(100)
-            color: Theme.primaryColor
+            height: Units.dp(88)
+            color: Theme.accentColor
 
             Row {
                 id: timeContainer
@@ -158,13 +168,13 @@ FocusScope {
                     id: minutesLabel
                     style: "display3"
                     color: !isHours ? "white" : "#99ffffff"
-					text: internal.timePicked.getMinutes() < 10 ? "0" +  internal.timePicked.getMinutes() : internal.timePicked.getMinutes()
+                    text: internal.timePicked.getMinutes() < 10 ? "0" +  internal.timePicked.getMinutes() : internal.timePicked.getMinutes()
                     anchors.verticalCenter: parent.verticalCenter
 
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-							if(isHours){
+                            if(isHours){
                                 setIsHours(false)
                             }
                         }
@@ -172,14 +182,42 @@ FocusScope {
                 }
             }
 
-            Label {
-                id: ampmLabel
+            Column {
+                id: amPmPicker
                 visible: !prefer24Hour
-                style: "body2"
-                text: amPmPicker.isAm ? "AM" : "PM"
+
+                property bool isAm: true
+
                 anchors {
                     bottom: timeContainer.bottom
                     left: timeContainer.right
+                    leftMargin: Units.dp(12)
+                }
+
+                spacing: Units.dp(4)
+
+                Label {
+                    style: "subheading"
+                    font.weight: Font.DemiBold
+                    color: amPmPicker.isAm ? "white" : "#99ffffff"
+                    text: "AM"
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: amPmPicker.isAm = true
+                    }
+                }
+
+                Label {
+                    style: "subheading"
+                    font.weight: Font.DemiBold
+                    color: !amPmPicker.isAm ? "white" : "#99ffffff"
+                    text: "PM"
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: amPmPicker.isAm = false
+                    }
                 }
             }
         }
@@ -192,43 +230,74 @@ FocusScope {
 
             Rectangle {
                 id: circle
-                color: "#ddd"
+                color: "#eee"
                 anchors.centerIn: parent
-                width: parent.width * 0.8
+                width: parent.width * 0.9
                 height: width
                 radius: width / 2
 
                 Rectangle {
                     id: centerPoint
                     anchors.centerIn: parent
-                    color: "#444"
-					width: Units.dp(3)
-					height: Units.dp(3)
+                    color: Theme.accentColor
+                    width: Units.dp(8)
+                    height: Units.dp(8)
                     radius: width / 2
                 }
 
                 Rectangle {
                     id: pointer
-                    color: "#000"
-					width: Units.dp(1)
+                    color: Theme.accentColor
+                    width: Units.dp(2)
                     height: circle.height / 2 - clockPadding
                     y: clockPadding
                     anchors.horizontalCenter: parent.horizontalCenter
-					antialiasing: true
-					transformOrigin: Item.Bottom
-                    rotation: {
+                    antialiasing: true
+                    transformOrigin: Item.Bottom
+
+                    Connections {
+                        target: hoursPathView
+                        onCurrentIndexChanged: {
+                            if(isHours)
+                                pointer.setAngle()
+                        }
+                    }
+
+                    Connections {
+                        target: minutesPathView
+                        onCurrentIndexChanged: {
+                            if(!isHours)
+                                pointer.setAngle()
+                        }
+                    }
+
+                    Connections {
+                        target: timePicker
+                        onIsHoursChanged: pointer.setAngle()
+                    }
+
+                    function setAngle()
+                    {
                         var idx = isHours ? hoursPathView.currentIndex : minutesPathView.currentIndex
-						if(isHours)
-							return (360 / ((prefer24Hour) ? 24 : 12)) * idx
-						else
-							return 360 / 60 * idx
+                        var angle
+                        if(isHours)
+                            angle = (360 / ((prefer24Hour) ? 24 : 12)) * idx
+                        else
+                            angle = 360 / 60 * idx
+
+                        if(Math.abs(pointer.rotation - angle) == 180)
+                            pointerRotation.direction = RotationAnimation.Clockwise
+                        else
+                            pointerRotation.direction = RotationAnimation.Shortest
+
+                        pointer.rotation = angle
                     }
 
                     Behavior on rotation {
                         RotationAnimation {
                             id: pointerRotation
                             duration: 200
-							direction: RotationAnimation.Shortest
+                            direction: RotationAnimation.Shortest
                         }
                     }
                 }
@@ -247,12 +316,12 @@ FocusScope {
                 Component {
                     id: pathViewItem
                     Rectangle {
-						id: rectangle
-						width: !isHours && modelData % 5 == 0 ? Units.dp(10) : isHours ? Units.dp(25) : Units.dp(5)
-						height: !isHours && modelData % 5 == 0 ? Units.dp(10) : isHours ? Units.dp(25) : Units.dp(5)
+                        id: rectangle
+                        width: !isHours && modelData % 5 == 0 ? Units.dp(12) : isHours ? Units.dp(30) : Units.dp(8)
+                        height: !isHours && modelData % 5 == 0 ? Units.dp(12) : isHours ? Units.dp(30) : Units.dp(8)
                         color: "transparent"
 
-						property bool isSelected: false
+                        property bool isSelected: false
 
                         Label {
                             anchors.centerIn: parent
@@ -260,99 +329,99 @@ FocusScope {
                                 var model = isHours ? hoursPathView.model : minutesPathView.model
                                 return model.data < 10 && !isHours ? "0" + modelData : modelData
                             }
-							visible: modelData >= 0 && (isHours ? true : modelData % 5 == 0)
-                            style: "body2"
-						}
+                            visible: modelData >= 0 && (isHours ? true : modelData % 5 == 0)
+                            style: "subheading"
+                        }
 
-						Connections {
-							target: parentMouseArea
+                        Connections {
+                            target: parentMouseArea
 
-							onClicked: {
-								checkClick(false)
-							}
+                            onClicked: {
+                                checkClick(false)
+                            }
 
-							onPositionChanged: {
-								checkClick(true)
-							}
+                            onPositionChanged: {
+                                checkClick(true)
+                            }
 
-							function checkClick(isPress)
-							{
-								if((isPress ? parentMouseArea.leftButtonPressed : true) && rectangle.visible) {
-									var thisPosition = rectangle.mapToItem(null, 0, 0, width, height)
+                            function checkClick(isPress)
+                            {
+                                if((isPress ? parentMouseArea.leftButtonPressed : true) && rectangle.visible) {
+                                    var thisPosition = rectangle.mapToItem(null, 0, 0, width, height)
 
-									if(parentMouseArea.globalX > thisPosition.x &&
-										parentMouseArea.globalY > thisPosition.y &&
-										parentMouseArea.globalX < (thisPosition.x + width) &&
-										parentMouseArea.globalY < (thisPosition.y + height)) {
+                                    if(parentMouseArea.globalX > thisPosition.x &&
+                                        parentMouseArea.globalY > thisPosition.y &&
+                                        parentMouseArea.globalX < (thisPosition.x + width) &&
+                                        parentMouseArea.globalY < (thisPosition.y + height)) {
 
-										if(!rectangle.isSelected) {
-											rectangle.isSelected = true
+                                        if(!rectangle.isSelected) {
+                                            rectangle.isSelected = true
 
-											var newDate = new Date(internal.timePicked) // Grab a new date from existing
+                                            var newDate = new Date(internal.timePicked) // Grab a new date from existing
 
-											var time = parseInt(modelData)
-											if(isHours) {
-												if(!prefer24Hour && !amPmPicker.isAm && time < 12) {
-													time += 12
-												}
-												else if(!prefer24Hour && amPmPicker.isAm && time === 12) {
-													time = 0
-												}
+                                            var time = parseInt(modelData)
+                                            if(isHours) {
+                                                if(!prefer24Hour && !amPmPicker.isAm && time < 12) {
+                                                    time += 12
+                                                }
+                                                else if(!prefer24Hour && amPmPicker.isAm && time === 12) {
+                                                    time = 0
+                                                }
 
-												newDate.setHours(time)
-											} else {
-												newDate.setMinutes(time)
-											}
+                                                newDate.setHours(time)
+                                            } else {
+                                                newDate.setMinutes(time)
+                                            }
 
-											internal.timePicked = newDate
-										}
-									}
-									else {
-										rectangle.isSelected = false
-									}
-								}
-							}
-						}
+                                            internal.timePicked = newDate
+                                        }
+                                    }
+                                    else {
+                                        rectangle.isSelected = false
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
-				MouseArea {
-					property bool leftButtonPressed
-					property int globalX
-					property int globalY
-					id: parentMouseArea
-					anchors.fill: circle
-					hoverEnabled: true
+                MouseArea {
+                    property bool leftButtonPressed
+                    property int globalX
+                    property int globalY
+                    id: parentMouseArea
+                    anchors.fill: circle
+                    hoverEnabled: true
 
-					onClicked: {
-						globalX = parentMouseArea.mapToItem(null, mouse.x, mouse.y).x
-						globalY = parentMouseArea.mapToItem(null, mouse.x, mouse.y).y
-					}
+                    onClicked: {
+                        globalX = parentMouseArea.mapToItem(null, mouse.x, mouse.y).x
+                        globalY = parentMouseArea.mapToItem(null, mouse.x, mouse.y).y
+                    }
 
-					onPositionChanged: {
+                    onPositionChanged: {
                         if(containsPress)
-						{
-							leftButtonPressed = true
-							globalX = parentMouseArea.mapToItem(null, mouse.x, mouse.y).x
-							globalY = parentMouseArea.mapToItem(null, mouse.x, mouse.y).y
-						}
-						else
-						{
-							leftButtonPressed = false
-						}
-					}
-				}
+                        {
+                            leftButtonPressed = true
+                            globalX = parentMouseArea.mapToItem(null, mouse.x, mouse.y).x
+                            globalY = parentMouseArea.mapToItem(null, mouse.x, mouse.y).y
+                        }
+                        else
+                        {
+                            leftButtonPressed = false
+                        }
+                    }
+                }
 
 
                 PathView {
                     id: hoursPathView
                     anchors.fill: parent
                     visible: isHours
-					model: {
-						var limit = prefer24Hour ? 24 : 12
-						var zeroBased = prefer24Hour
-						return getTimeList(limit, zeroBased)
-					}
+                    model: {
+                        var limit = prefer24Hour ? 24 : 12
+                        var zeroBased = prefer24Hour
+                        return getTimeList(limit, zeroBased)
+                    }
                     highlightRangeMode: PathView.NoHighlightRange
                     highlightMoveDuration: 200
 
@@ -393,10 +462,10 @@ FocusScope {
                 PathView {
                     id: minutesPathView
                     anchors.fill: parent
-					visible: !isHours
-					model: {
-						return getTimeList(60, true)
-					}
+                    visible: !isHours
+                    model: {
+                        return getTimeList(60, true)
+                    }
                     highlightRangeMode: PathView.NoHighlightRange
                     highlightMoveDuration: 200
                     delegate: pathViewItem
@@ -422,67 +491,6 @@ FocusScope {
                             radiusY: circle.width / 2 - clockPadding
                             useLargeArc: false
                         }
-                    }
-                }
-            }
-        }
-
-        Rectangle {
-            id: amPmPicker
-            height: Units.dp(40)
-            width: circle.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            visible: !prefer24Hour
-
-            property bool isAm: true
-
-            Rectangle {
-                id: amButton
-                height: Units.dp(40)
-                width: Units.dp(40)
-                radius: width / 2
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                color: amPmPicker.isAm ? Theme.primaryColor : "white"
-
-                Label {
-                    id: amLabel
-                    text: "AM"
-                    anchors.centerIn: parent
-                    style: "menu"
-                    color: amPmPicker.isAm ? "white" : "black"
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        amPmPicker.isAm = true
-                    }
-                }
-            }
-
-            Rectangle {
-                id: pmButton
-                property bool selected: !amButton.selected
-                height: Units.dp(40)
-                width: Units.dp(40)
-                radius: width / 2
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                color: !amPmPicker.isAm ? Theme.primaryColor : "white"
-
-                Label {
-                    id: pmLabel
-                    text: "PM"
-                    anchors.centerIn: parent
-                    style: "menu"
-                    color: !amPmPicker.isAm ? "white" : "black"
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        amPmPicker.isAm = false
                     }
                 }
             }
@@ -517,18 +525,20 @@ FocusScope {
         return date
     }
 
-    /**
-      Resets the view after closing
-    */
-    function reset(){
+    /*!
+       \internal
+       Resets the view after closing
+     */
+    function reset() {
         isHours = true
         internal.resetFlag = false
         amPmPicker.isAm = true
         internal.timePicked = new Date(Date.now())
     }
 
-    /**
-      Provides list of ints for pathview based on the context and user prefs
+    /*!
+       \internal
+       Provides list of ints for pathview based on the context and user prefs
      */
     function getTimeList(limit, isZeroBased) {
         var items = []
@@ -538,37 +548,39 @@ FocusScope {
 
         var start = isZeroBased ? 0 : 1
 
-		var jump = limit > 24 ? 1 : 1
+        var jump = limit > 24 ? 1 : 1
         for(var i = start; i < limit; i += jump) {
             items[i / jump] = i
         }
         return items
     }
 
-	function setDigitsPressed(minute)
-	{
-		if(__digitsPressed.length > 1) {
-			__digitsPressed = ""
-			__digitsPressed = minute
-		}
-		else {
-			__digitsPressed += minute
-		}
+    /*!
+       \internal
+     */
+    function setDigitsPressed(minute)
+    {
+        if(__digitsPressed.length > 1) {
+            __digitsPressed = ""
+            __digitsPressed = minute
+        }
+        else {
+            __digitsPressed += minute
+        }
 
-		var date = internal.timePicked
-		var value = parseInt(__digitsPressed)
+        var date = internal.timePicked
+        var value = parseInt(__digitsPressed)
 
-		if((isHours && value > 23) || (!isHours && value > 59)) {
-			__digitsPressed = ""
-			return
-		}
+        if((isHours && value > 23) || (!isHours && value > 59)) {
+            __digitsPressed = ""
+            return
+        }
 
-		if(isHours)
-			date.setHours(value)
-		else
-			date.setMinutes(value)
+        if(isHours)
+            date.setHours(value)
+        else
+            date.setMinutes(value)
 
-		internal.timePicked = date
-	}
+        internal.timePicked = date
+    }
 }
-

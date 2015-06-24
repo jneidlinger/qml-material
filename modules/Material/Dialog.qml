@@ -276,9 +276,9 @@ PopupBase {
 
                     anchors {
                         top: parent.top
-                        right: positiveButton.left
+                        right: positiveButton.visible ? positiveButton.left : parent.right
                         topMargin: Units.dp(8)
-                        rightMargin: Units.dp(8)
+                        rightMargin: positiveButton.visible ? Units.dp(8) : Units.dp(16)
                     }
 
                     onClicked: {
