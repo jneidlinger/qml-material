@@ -32,7 +32,7 @@ TextFieldStyle {
     }
 
     font {
-        family: "Roboto"
+        family: echoMode == TextInput.Password && field.text.length > 0 ? "" : "Roboto"
         pixelSize: Units.dp(16)
     }
 
