@@ -31,7 +31,7 @@ Row {
     property var tabs: []
     property int selectedIndex: 0
 
-    property bool darkBackground
+    property bool darkBackground: Theme.darkMode
 
     property color color: darkBackground ? Theme.dark.textColor : Theme.light.textColor
     property color highlightColor: Theme.tabHighlightColor
@@ -109,7 +109,7 @@ Row {
                     text: modelData.hasOwnProperty("text") ? modelData.text : modelData
                     color: tabItem.selected
                             ? darkBackground ? Theme.dark.textColor : Theme.light.accentColor
-                            : darkBackground ? Theme.dark.shade(0.6) : Theme.light.shade(0.6)
+                            : darkBackground ? Theme.dark.shade(0.7) : Theme.light.shade(0.7)
 
                     style: "body2"
                     font.capitalization: Font.AllUppercase

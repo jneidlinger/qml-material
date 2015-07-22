@@ -63,11 +63,10 @@ PopupBase {
     }
 
     View {
-        id:containerView
+        id: containerView
         
         anchors.fill: parent
 
         elevation: 2
-        backgroundColor: "#fff"
     }
 }

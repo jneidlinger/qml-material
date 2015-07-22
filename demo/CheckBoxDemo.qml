@@ -5,70 +5,50 @@ import Material 0.1
 ColumnLayout {
     spacing: 0
 
-    Repeater {
-        model: 2
+    GridLayout {
+        id: grid
+        anchors.centerIn: parent
+        columns: 3
 
-        Rectangle {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.minimumHeight: grid.height + Units.dp(80)
-            Layout.minimumWidth: grid.width + Units.dp(80)
-            color: index == 0 ? "#EEE" : "#333"
+        // Empty filler
+        Item { width: 1; height: 1 }
 
-            GridLayout {
-                id: grid
-                anchors.centerIn: parent
-                columns: 3
+        Label {
+            Layout.alignment : Qt.AlignHCenter
+            text: "Normal"
+        }
 
-                // Empty filler
-                Item { width: 1; height: 1 }
+        Label {
+            Layout.alignment : Qt.AlignHCenter
+            text: "Disabled"
+        }
 
-                Label {
-                    Layout.alignment : Qt.AlignHCenter
-                    text: "Normal"
-                    color: index == 0 ? Theme.light.textColor : Theme.dark.textColor
-                }
+        Label {
+            text: "On"
+        }
 
-                Label {
-                    Layout.alignment : Qt.AlignHCenter
-                    text: "Disabled"
-                    color: index == 0 ? Theme.light.textColor : Theme.dark.textColor
-                }
+        CheckBox {
+            checked: true
+            text: "On"
+        }
 
-                Label {
-                    text: "On"
-                    color: index == 0 ? Theme.light.textColor : Theme.dark.textColor
-                }
+        CheckBox {
+            checked: true
+            enabled: false
+            text: "Disabled"
+        }
 
-                CheckBox {
-                    checked: true
-                    text: "On"
-                    darkBackground: index == 1
-                }
+        Label {
+            text: "Off"
+        }
 
-                CheckBox {
-                    checked: true
-                    enabled: false
-                    text: "Disabled"
-                    darkBackground: index == 1
-                }
+        CheckBox {
+            text: "Off"
+        }
 
-                Label {
-                    text: "Off"
-                    color: index == 0 ? Theme.light.textColor : Theme.dark.textColor
-                }
-
-                CheckBox {
-                    text: "Off"
-                    darkBackground: index == 1
-                }
-
-                CheckBox {
-                    text: "Disabled"
-                    enabled: false
-                    darkBackground: index == 1
-                }
-            }
+        CheckBox {
+            text: "Disabled"
+            enabled: false
         }
     }
 }

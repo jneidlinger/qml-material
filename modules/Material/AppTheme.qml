@@ -52,11 +52,14 @@ QtObject {
        window decorations. This is a helper property to set \l Theme::primaryDarkColor.
      */ 
     property color primaryDarkColor: Theme.primaryDarkColor
+
+    property bool darkMode: Theme.darkMode
     
     onPrimaryColorChanged: Theme.primaryColor = primaryColor
     onPrimaryDarkColorChanged: Theme.primaryDarkColor = primaryDarkColor
     onAccentColorChanged: Theme.accentColor = accentColor
     onBackgroundColorChanged: Theme.backgroundColor = backgroundColor
     onTabHighlightColorChanged: Theme.tabHighlightColor = tabHighlightColor
+    onDarkModeChanged: Theme.darkMode = darkMode
 }
 

@@ -37,7 +37,7 @@ Controls.CheckBox {
     /*!
        Set to \c true if the checkbox is on a dark background
      */
-    property bool darkBackground
+    property bool darkBackground: Theme.darkMode
 
     style: MaterialStyle.CheckBoxStyle {}
 

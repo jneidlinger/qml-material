@@ -47,7 +47,6 @@ BottomSheet {
             visible: title !== ""
             height: Units.dp(56)
             style: "subheading"
-            backgroundColor: "white"
             elevation: listView.atYBeginning ? 0 : 1
             fullWidth: true
             z: 2

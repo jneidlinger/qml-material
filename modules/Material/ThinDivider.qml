@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import Material 0.1
 
 /*!
    \qmltype ThinDivider
@@ -29,6 +30,6 @@ Rectangle {
         right: parent.right
     }
 
-    color: Qt.rgba(0,0,0,0.1)
+    color: Theme.darkMode ? Theme.dark.dividerColor : Theme.light.dividerColor
     height: 1
 }

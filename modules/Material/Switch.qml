@@ -39,7 +39,7 @@ Controls.Switch {
     /*!
        Set to \c true if the switch is on a dark background
      */
-    property bool darkBackground
+    property bool darkBackground: Theme.darkMode
 
     style: ControlStyles.SwitchStyle {
         handle: View {

@@ -56,7 +56,7 @@ View {
         }
     }
     radius: fullWidth ? 0 : Units.dp(2)
-    backgroundColor: "#323232"
+    backgroundColor: Theme.darkMode ? "#616161" : "#323232"
     height: snackLayout.height
     width: fullWidth ? undefined : snackLayout.width
     opacity: opened ? 1 : 0

@@ -30,7 +30,7 @@ import QtGraphicalEffects 1.0
 Item {
     id: icon
 
-    property color color: Theme.light.iconColor
+    property color color: Theme.darkMode ? Theme.dark.iconColor : Theme.light.iconColor
     property real size: Units.dp(24)
 
     /*!
@@ -91,7 +91,7 @@ Item {
         anchors.fill: parent
         source: image
         color: Theme.alpha(icon.color, 1)
-        cached: true
+        cached: false
         visible: image.source != "" && colorize
         opacity: icon.color.a
     }  

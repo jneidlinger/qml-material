@@ -54,7 +54,7 @@ View {
             margins: margins
         }
 
-        color: Theme.light.subTextColor
+        color: Theme.darkMode ? Theme.dark.subTextColor : Theme.light.subTextColor
     }
 
     property bool showDivider: false

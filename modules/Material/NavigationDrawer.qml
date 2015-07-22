@@ -73,6 +73,5 @@ PopupBase {
         anchors.fill: parent
         fullHeight: true
         elevation: 3
-        backgroundColor: "white"
     }
 }

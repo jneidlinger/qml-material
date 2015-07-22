@@ -64,11 +64,15 @@ Object {
      */
     property color backgroundColor: "#f3f3f3"
 
+    property color darkBackgroundColor: "#303030"
+
     /*!
        The color of the higlight indicator for selected tabs. By default this is the accent color,
        but it can also be white (for a dark primary color/toolbar background).
      */
     property color tabHighlightColor: accentColor
+
+    property bool darkMode: false
 
     /*!
        Standard colors specifically meant for light surfaces. This includes text colors along with

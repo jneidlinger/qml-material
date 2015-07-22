@@ -45,12 +45,7 @@ Item {
                 }
 
                 onClicked: enablingSwitch.checked = !enablingSwitch.checked
-
-                action: Icon {
-                    anchors.centerIn: parent
-                    name: "device/access_alarm"
-                    size: Units.dp(32)
-                }
+                iconName: "device/access_alarm"
             }
 
             ListItem.SimpleMenu {

@@ -12,6 +12,7 @@ ApplicationWindow {
         primaryDarkColor: Palette.colors["blue"]["700"]
         accentColor: Palette.colors["teal"]["500"]
         tabHighlightColor: "white"
+        darkMode: false
     }
 
     property var styles: [
@@ -59,6 +60,7 @@ ApplicationWindow {
                 iconName: "action/settings"
                 name: "Settings"
                 hoverAnimation: true
+                onTriggered: theme.darkMode = !theme.darkMode
             },
 
             Action {

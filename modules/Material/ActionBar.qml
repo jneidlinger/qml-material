@@ -72,7 +72,7 @@ Item {
        The background color for the toolbar when the action bar's page is active.
        By default this is the primary color defined in \l Theme::primaryColor
      */
-    property color backgroundColor: Theme.primaryColor
+    property color backgroundColor: Theme.darkMode ? Theme.primaryDarkColor : Theme.primaryColor
 
     /*!
        \qmlproperty Item customContent

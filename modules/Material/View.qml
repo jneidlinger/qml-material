@@ -34,9 +34,7 @@ Item {
     property int elevation: 0
     property real radius: 0
 
-    property string style: "default"
-
-    property color backgroundColor: elevation > 0 ? "white" : "transparent"
+    property color backgroundColor: elevation > 0 ? (Theme.darkMode ? "#424242" : "white") : "transparent"
     property color tintColor: "transparent"
 
     property alias border: rect.border

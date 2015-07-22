@@ -49,7 +49,7 @@ import "ListItems" as ListItem
 View {
     id: root
 
-    backgroundColor: style === "default" ? "white" : "#333"
+    backgroundColor: Theme.darkMode ? "#424242" : "white"
 
     anchors {
         left: mode === "left" ? parent.left : undefined
@@ -67,7 +67,7 @@ View {
     property string mode: "left" // or "right"
     property alias header: headerItem.text
 
-    property color borderColor: style === "dark" ? Qt.rgba(0.5,0.5,0.5,0.5) : Theme.light.dividerColor
+    property color borderColor: Theme.darkMode ? Qt.rgba(0.5,0.5,0.5,0.5) : Theme.light.dividerColor
 
     property bool autoFlick: true
 

@@ -96,7 +96,7 @@ FocusScope {
        The background color of the page. Defaults to the global background color
        defined in \l Theme::backgroundColor
      */
-    property color backgroundColor: Theme.backgroundColor
+    property color backgroundColor: Theme.darkMode ? Theme.darkBackgroundColor : Theme.backgroundColor
 
     /*!
        \internal

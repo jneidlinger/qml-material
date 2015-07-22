@@ -58,7 +58,11 @@ BaseListItem {
                 }
 
                 visible: name != ""
-                color: listItem.expanded ? Theme.primaryColor : Theme.light.iconColor
+
+                color: Theme.darkMode ?
+                       (listItem.selected ? Theme.primaryDarkColor : Theme.dark.iconColor) :
+                       (listItem.selected ? Theme.primaryColor : Theme.light.iconColor)
+
                 size: Units.dp(24)
             }
         }
@@ -72,7 +76,9 @@ BaseListItem {
             elide: Text.ElideRight
             style: "subheading"
 
-            color: listItem.expanded ? Theme.primaryColor : Theme.light.textColor
+            color: Theme.darkMode ?
+                   (listItem.expanded ? Theme.primaryDarkColor : Theme.dark.textColor) :
+                   (listItem.expanded ? Theme.primaryColor : Theme.light.textColor)
         }
 
         Item {

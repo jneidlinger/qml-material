@@ -81,7 +81,11 @@ BaseListItem {
                 }
 
                 visible: valid
-                color: listItem.selected ? Theme.primaryColor : Theme.light.iconColor
+
+                color: Theme.darkMode ?
+                       (listItem.selected ? Theme.primaryDarkColor : Theme.dark.iconColor) :
+                       (listItem.selected ? Theme.primaryColor : Theme.light.iconColor)
+
                 size: Units.dp(24)
             }
         }
@@ -114,7 +118,7 @@ BaseListItem {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.preferredWidth: visible ? implicitWidth : 0
 
-                    color: Theme.light.subTextColor
+                    color: Theme.darkMode ? Theme.dark.subTextColor : Theme.light.subTextColor
                     elide: Text.ElideRight
                     horizontalAlignment: Qt.AlignHCenter
                     style: "body1"
@@ -135,7 +139,7 @@ BaseListItem {
                 id: subLabel
                 Layout.fillWidth: true
 
-                color: Theme.light.subTextColor
+                color: Theme.darkMode ? Theme.dark.subTextColor : Theme.light.subTextColor
                 elide: Text.ElideRight
                 wrapMode: Text.WordWrap
                 style: "body1"

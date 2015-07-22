@@ -39,7 +39,7 @@ Controls.RadioButton {
     /*!
        Set to \c true if the radio button is on a dark background
      */
-    property bool darkBackground
+    property bool darkBackground: Theme.darkMode
 
     /*!
        Set to \c true if the radio button can be toggled from checked to unchecked

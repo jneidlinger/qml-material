@@ -135,71 +135,6 @@ PopupBase {
             }
         }
 
-        Item {
-            anchors {
-                left: parent.left
-                right: parent.right
-                top: parent.top
-                topMargin: Units.dp(8)
-            }
-
-            clip: true
-            height: headerView.height + Units.dp(32)
-
-            View {
-                backgroundColor: "white"
-                elevation: content.atYBeginning ? 0 : 1
-                fullWidth: true
-
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                }
-
-                height: headerView.height + Units.dp(16)
-            }
-        }
-
-
-        Column {
-            id: headerView
-
-            spacing: Units.dp(16)
-
-            anchors {
-                left: parent.left
-                right: parent.right
-                top: parent.top
-
-                leftMargin: Units.dp(16)
-                rightMargin: Units.dp(16)
-                topMargin: title == "" && text == "" ? 0 : Units.dp(16)
-            }
-
-            Label {
-                id: titleLabel
-
-                width: parent.width
-                wrapMode: Text.Wrap
-                style: "title"
-                visible: title != ""
-            }
-
-            Label {
-                id: textLabel
-
-                width: parent.width
-                wrapMode: Text.Wrap
-                style: "dialog"
-                visible: text != ""
-            }
-        }
-
-        Rectangle {
-            anchors.fill: content
-        }
-
         Flickable {
             id: content
 
@@ -238,6 +173,67 @@ PopupBase {
         }
 
         Item {
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+                topMargin: Units.dp(8)
+            }
+
+            clip: true
+            height: headerView.height + Units.dp(32)
+
+            View {
+                backgroundColor: Theme.darkMode ? "#424242" : "white"
+                elevation: content.atYBeginning ? 0 : 1
+                fullWidth: true
+
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                }
+
+                height: headerView.height > 0 ? (headerView.height + Units.dp(16)) : 0
+            }
+        }
+
+
+        Column {
+            id: headerView
+
+            spacing: Units.dp(16)
+
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+
+                leftMargin: Units.dp(16)
+                rightMargin: Units.dp(16)
+                topMargin: title == "" && text == "" ? 0 : Units.dp(16)
+            }
+
+            Label {
+                id: titleLabel
+
+                width: parent.width
+                wrapMode: Text.Wrap
+                style: "title"
+                visible: title != ""
+            }
+
+            Label {
+                id: textLabel
+
+                width: parent.width
+                wrapMode: Text.Wrap
+                style: "dialog"
+                visible: text != ""
+            }
+        }
+
+        Item {
             id: buttonContainer
 
             anchors {
@@ -256,7 +252,7 @@ PopupBase {
                 height: hasActions ? positiveButton.implicitHeight + Units.dp(8) : 0
                 visible: hasActions
 
-                backgroundColor: floatingActions ? "transparent" : "white"
+                backgroundColor: floatingActions ? "transparent" : Theme.darkMode ? "#424242" : "white"
                 elevation: content.atYEnd ? 0 : 1
                 fullWidth: true
                 elevationInverted: true
