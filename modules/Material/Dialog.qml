@@ -216,13 +216,13 @@ PopupBase {
                 right: parent.right
                 top: parent.top
 
-                leftMargin: Units.dp(24)
-                rightMargin: Units.dp(24)
+                leftMargin: contentMargins
+                rightMargin: contentMargins
             }
 
             Item {
                 width: parent.width
-                height: Units.dp(24)
+                height: contentMargins
                 visible: titleLabel.visible || textLabel.visible
             }
 
@@ -253,7 +253,7 @@ PopupBase {
 
             Item {
                 width: parent.width
-                height: Units.dp(24)
+                height: contentMargins
                 visible: textLabel.visible
             }
         }
