@@ -26,8 +26,7 @@ import Material.Extras 0.1
 /*!
    \qmltype Dialog
    \inqmlmodule Material 0.1
-
-   \brief Dialogs inform users about critical information, require users to make 
+   \brief Dialogs inform users about critical information, require users to make
    decisions, or encapsulate multiple tasks within a discrete process
  */
 PopupBase {
@@ -42,23 +41,20 @@ PopupBase {
     width: Math.max(minimumWidth,
                     content.contentWidth + 2 * contentMargins)
 
-    height: Math.min(Units.dp(350),
-                     headerView.height + Units.dp(32) +
+    height: Math.min(parent.height - Units.dp(64),
+                     headerView.height +
                      content.contentHeight +
-                     content.topMargin +
-                     content.bottomMargin +
-                     buttonContainer.height)
+                     (floatingActions ? 0 : buttonContainer.height))
 
-    property int contentMargins: Units.dp(16)
+    property int contentMargins: Units.dp(24)
 
-    property int minimumWidth: Units.dp(270)
+    property int minimumWidth: Device.isMobile ? Units.dp(280) : Units.dp(300)
 
     property alias title: titleLabel.text
     property alias text: textLabel.text
 
     /*!
        \qmlproperty Button negativeButton
-
        The negative button, displayed as the leftmost button on the right of the dialog buttons.
        This is usually used to dismiss the dialog.
      */
@@ -66,7 +62,6 @@ PopupBase {
 
     /*!
        \qmlproperty Button primaryButton
-
        The primary button, displayed as the rightmost button in the dialog buttons row. This is
        usually used to accept the dialog's action.
      */
@@ -77,6 +72,7 @@ PopupBase {
     property alias positiveButtonEnabled: positiveButton.enabled
 
     property bool hasActions: true
+    property bool floatingActions: false
 
     default property alias dialogContent: column.data
 
@@ -127,6 +123,7 @@ PopupBase {
         anchors.fill: parent
         elevation: 5
         radius: Units.dp(2)
+        backgroundColor: "white"
 
         MouseArea {
             anchors.fill: parent
@@ -134,67 +131,6 @@ PopupBase {
 
             onClicked: {
                 mouse.accepted = false
-            }
-        }
-
-        Item {
-            anchors {
-                left: parent.left
-                right: parent.right
-                top: parent.top
-                topMargin: Units.dp(8)
-            }
-
-            clip: true
-            height: headerView.height + Units.dp(32)
-
-            View {
-                backgroundColor: "white"
-                elevation: content.atYBeginning ? 0 : 1
-                fullWidth: true
-
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                }
-
-                height: headerView.height + Units.dp(16)
-            }
-        }
-
-
-        Column {
-            id: headerView
-
-            spacing: Units.dp(16)
-
-            anchors {
-                left: parent.left
-                right: parent.right
-                top: parent.top
-
-                leftMargin: Units.dp(16)
-                rightMargin: Units.dp(16)
-                topMargin: Units.dp(16)
-            }
-
-            Label {
-                id: titleLabel
-
-                width: parent.width
-                wrapMode: Text.Wrap
-                style: "title"
-                visible: text != ""
-            }
-
-            Label {
-                id: textLabel
-
-                width: parent.width
-                wrapMode: Text.Wrap
-                style: "dialog"
-                visible: text != ""
             }
         }
 
@@ -206,32 +142,37 @@ PopupBase {
             id: content
 
             contentWidth: column.implicitWidth
-            contentHeight: column.height
+            contentHeight: column.height + (column.height > 0 ? contentMargins : 0)
             clip: true
 
             anchors {
                 left: parent.left
                 right: parent.right
                 top: headerView.bottom
-                topMargin: Units.dp(8)
-                bottomMargin: Units.dp(-8)
-                bottom: buttonContainer.top
+                bottom: floatingActions ? parent.bottom : buttonContainer.top
             }
 
-            interactive: contentHeight + Units.dp(8) > height
-            bottomMargin: hasActions ? 0 : Units.dp(8)
+            interactive: contentHeight > height
 
-            Rectangle {
-                Column {
-                    id: column
-                    anchors {
-                        left: parent.left
-                        margins: contentMargins
-                    }
+            onContentXChanged: {
+                if(contentX != 0 && contentWidth <= width)
+                    contentX = 0
+            }
 
-                    width: content.width - 2 * contentMargins
-                    spacing: Units.dp(16)
+            onContentYChanged: {
+                if(contentY != 0 && contentHeight <= height)
+                    contentY = 0
+            }
+
+            Column {
+                id: column
+                anchors {
+                    left: parent.left
+                    leftMargin: contentMargins
                 }
+
+                width: content.width - 2 * contentMargins
+                spacing: Units.dp(8)
             }
         }
 
@@ -240,27 +181,102 @@ PopupBase {
         }
 
         Item {
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+            }
+
+            height: headerView.height
+
+            View {
+                backgroundColor: "white"
+                elevation: content.atYBeginning ? 0 : 1
+                fullWidth: true
+                radius: dialogContainer.radius
+
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                }
+
+                height: parent.height
+            }
+        }
+
+
+        Column {
+            id: headerView
+
+            spacing: 0
+
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+
+                leftMargin: Units.dp(24)
+                rightMargin: Units.dp(24)
+            }
+
+            Item {
+                width: parent.width
+                height: Units.dp(24)
+                visible: titleLabel.visible || textLabel.visible
+            }
+
+            Label {
+                id: titleLabel
+
+                width: parent.width
+                wrapMode: Text.Wrap
+                style: "title"
+                visible: title != ""
+            }
+
+            Item {
+                width: parent.width
+                height: Units.dp(20)
+                visible: titleLabel.visible
+            }
+
+            Label {
+                id: textLabel
+
+                width: parent.width
+                wrapMode: Text.Wrap
+                style: "dialog"
+                color: Theme.light.subTextColor
+                visible: text != ""
+            }
+
+            Item {
+                width: parent.width
+                height: Units.dp(24)
+                visible: textLabel.visible
+            }
+        }
+
+        Item {
             id: buttonContainer
 
             anchors {
-                bottomMargin: Units.dp(8)
                 bottom: parent.bottom
                 right: parent.right
                 left: parent.left
             }
 
-            height: hasActions ? buttonView.height + Units.dp(8) : 0
-            clip: true
+            height: hasActions ? Units.dp(52) : Units.dp(2)
 
             View {
                 id: buttonView
 
-                height: hasActions ? positiveButton.implicitHeight + Units.dp(8) : 0
-                visible: hasActions
-
-                backgroundColor: "white"
+                height: parent.height
+                backgroundColor: floatingActions ? "transparent" : "white"
                 elevation: content.atYEnd ? 0 : 1
                 fullWidth: true
+                radius: dialogContainer.radius
                 elevationInverted: true
 
                 anchors {
@@ -272,14 +288,14 @@ PopupBase {
                 Button {
                     id: negativeButton
 
+                    visible: hasActions
                     text: negativeButtonText
                     textColor: Theme.accentColor
                     context: "dialog"
 
                     anchors {
-                        top: parent.top
-                        right: positiveButton.left
-                        topMargin: Units.dp(8)
+                        verticalCenter: parent.verticalCenter
+                        right: positiveButton.visible ? positiveButton.left : parent.right
                         rightMargin: Units.dp(8)
                     }
 
@@ -292,14 +308,14 @@ PopupBase {
                 Button {
                     id: positiveButton
 
+                    visible: hasActions
                     text: positiveButtonText
                     textColor: Theme.accentColor
                     context: "dialog"
 
                     anchors {
-                        top: parent.top
-                        topMargin: Units.dp(8)
-                        rightMargin: Units.dp(16)
+                        verticalCenter: parent.verticalCenter
+                        rightMargin: Units.dp(8)
                         right: parent.right
                     }
 
@@ -311,5 +327,4 @@ PopupBase {
             }
         }
     }
-
 }
