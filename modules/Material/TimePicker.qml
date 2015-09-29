@@ -49,6 +49,11 @@ FocusScope {
      */
     property int bottomMargin: 0
 
+	/*!
+	   Sets the current time picked
+	 */
+	property date defaultTime: new Date(Date.now())
+
     Keys.onUpPressed: {
         var date = internal.timePicked
 
@@ -120,8 +125,8 @@ FocusScope {
 
     Component.onCompleted: {
         internal.completed = true
-        internal.timePicked = new Date(Date.now())
-                forceActiveFocus()
+		internal.timePicked = defaultDate
+		forceActiveFocus()
     }
 
     Column {
@@ -506,7 +511,7 @@ FocusScope {
         if(_isHours == isHours)
             return
 
-        if(!internal.resetFlag)
+		if(!internal.resetFlag)
             internal.resetFlag = true
 
         var prevRotation = pointerRotation.duration
@@ -533,7 +538,7 @@ FocusScope {
         isHours = true
         internal.resetFlag = false
         amPmPicker.isAm = true
-        internal.timePicked = new Date(Date.now())
+		internal.timePicked = defaultTime
     }
 
     /*!

@@ -8,6 +8,8 @@ Dialog {
 
     property alias isHours: timePicker.isHours
     property alias prefer24Hour: timePicker.prefer24Hour
+	property alias defaultTime: timePicker.defaultTime
+
     signal timePicked(date timePicked)
 
     TimePicker {
