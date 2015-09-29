@@ -49,10 +49,10 @@ FocusScope {
      */
     property int bottomMargin: 0
 
-	/*!
-	   Sets the current time picked
-	 */
-	property date defaultTime: new Date(Date.now())
+    /*!
+       Sets the current time picked
+     */
+    property date defaultTime: new Date(Date.now())
 
     Keys.onUpPressed: {
         var date = internal.timePicked
@@ -119,14 +119,16 @@ FocusScope {
 
                 var minutes = internal.timePicked.getMinutes()
                 minutesPathView.currentIndex = minutes
+
+                console.log(timePicked.getHours())
             }
         }
     }
 
     Component.onCompleted: {
         internal.completed = true
-		internal.timePicked = defaultDate
-		forceActiveFocus()
+        internal.timePicked = defaultTime
+        forceActiveFocus()
     }
 
     Column {
@@ -146,10 +148,10 @@ FocusScope {
                 height: Units.dp(48)
 
                 Label {
-                    id:hoursLabel
+                    id: hoursLabel
                     style: "display3"
                     color: isHours ? "white" : "#99ffffff"
-                    text: internal.timePicked.getHours()
+                    text: internal.timePicked.getHours() == 0 && !prefer24Hour ? "12" : internal.timePicked.getHours()
                     anchors.verticalCenter: parent.verticalCenter
 
                     MouseArea {
@@ -511,7 +513,7 @@ FocusScope {
         if(_isHours == isHours)
             return
 
-		if(!internal.resetFlag)
+        if(!internal.resetFlag)
             internal.resetFlag = true
 
         var prevRotation = pointerRotation.duration
@@ -538,7 +540,7 @@ FocusScope {
         isHours = true
         internal.resetFlag = false
         amPmPicker.isAm = true
-		internal.timePicked = defaultTime
+        internal.timePicked = defaultTime
     }
 
     /*!
